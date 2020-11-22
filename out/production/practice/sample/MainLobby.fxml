@@ -7,14 +7,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainLobby">
    <top>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="settings" mnemonicParsing="false" onAction="#settingsButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Settings" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#settingsButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Settings">
+               <font>
+                  <Font name="Broadway" size="15.0" />
+               </font></Button>
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Credits" />
+            <Button fx:id="creditsButton" mnemonicParsing="false" onAction="#creditsButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Credits">
+               <font>
+                  <Font name="Broadway" size="15.0" />
+               </font></Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -24,7 +31,10 @@
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Prizes" />
+            <Button fx:id="prizesButton" mnemonicParsing="false" onAction="#prizesButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Prizes">
+               <font>
+                  <Font name="Broadway" size="15.0" />
+               </font></Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" />
@@ -41,10 +51,13 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="stats" mnemonicParsing="false" onAction="#statsButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Stats">
+            <Button fx:id="statsButton" mnemonicParsing="false" onAction="#statsButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Stats">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
+               <font>
+                  <Font name="Broadway" size="15.0" />
+               </font>
             </Button>
          </children>
          <BorderPane.margin>
@@ -55,7 +68,10 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="playButton" layoutX="60.0" layoutY="165.0" mnemonicParsing="false" onAction="#playButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Play" />
+            <Button fx:id="playButton" layoutX="60.0" layoutY="165.0" mnemonicParsing="false" onAction="#playButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Play">
+               <font>
+                  <Font name="Broadway" size="15.0" />
+               </font></Button>
          </children>
       </Pane>
    </center>

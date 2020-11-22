@@ -18,9 +18,11 @@ import java.io.IOException;
 public class MainLobby extends Application {
 
     @FXML Button goBack;
-    @FXML Button settings;
-    @FXML Button stats;
+    @FXML Button settingsButton;
+    @FXML Button statsButton;
     @FXML Button playButton;
+    @FXML Button prizesButton;
+    @FXML Button creditsButton;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -64,6 +66,12 @@ public class MainLobby extends Application {
         return scene;
     }
 
+    public void startNewGame(ActionEvent event) throws IOException {
+        Scene gameplayScene = startGame();
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(gameplayScene);
+    }
+
     public void settingsButtonPushed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Settings.fxml" ));
         Scene settingsScene = new Scene(root);
@@ -86,8 +94,23 @@ public class MainLobby extends Application {
     }
 
     public void playButtonPushed(ActionEvent event) throws IOException {
-        Scene gameplayScene = startGame();
+        Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml" ));
+        Scene mainLobby = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(gameplayScene);
+        window.setScene(mainLobby);
+    }
+
+    public void prizesButtonPushed(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Prizes.fxml" ));
+        Scene mainLobby = new Scene(root);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(mainLobby);
+    }
+
+    public void creditsButtonPushed(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Credits.fxml" ));
+        Scene mainLobby = new Scene(root);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(mainLobby);
     }
 }
