@@ -1,16 +1,26 @@
+// Manas Gupta : 2019368
+// Prachi Goyal: 2019186
 package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,15 +61,14 @@ public class MainLobby extends Application {
         DiamondLine dl = new DiamondLine();
         LeftCross lc = new LeftCross();
         RightCross rc = new RightCross();
-        Ball b = new Ball();
-        ColorSwitch c = new ColorSwitch(250, 220);
-        Star star = new Star(250, 220);
+        ColorSwitch c = new ColorSwitch(250, 250);
+        Star star = new Star(250, 150);
+        Ball b = new Ball(c,star,root);
 
         //Add all Elements to root node
-        for(Shape x: m.components) {
+        for(Shape x: c.components) {
             root.getChildren().add(x);
         }
-
         root.getChildren().addAll(b.getShape(), star.getShape());
         Scene scene = new Scene(root, 500, 700, Color.GREY);
 
@@ -95,22 +104,22 @@ public class MainLobby extends Application {
 
     public void playButtonPushed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml" ));
-        Scene mainLobby = new Scene(root);
+        Scene selectPlayerScene = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(mainLobby);
+        window.setScene(selectPlayerScene);
     }
 
     public void prizesButtonPushed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Prizes.fxml" ));
-        Scene mainLobby = new Scene(root);
+        Scene prizeScene = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(mainLobby);
+        window.setScene(prizeScene);
     }
 
     public void creditsButtonPushed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Credits.fxml" ));
-        Scene mainLobby = new Scene(root);
+        Scene creditsScene = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(mainLobby);
+        window.setScene(creditsScene);
     }
 }
