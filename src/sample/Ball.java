@@ -73,4 +73,3 @@ public final class Ball extends GameObject {
     private void destroy(){}
     private void updateScore(){}
 }
-

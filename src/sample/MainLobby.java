@@ -2,30 +2,31 @@
 // Prachi Goyal: 2019186
 package sample;
 
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Shape;
-import javafx.stage.Modality;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class MainLobby extends Application {
+public class MainLobby extends Application implements Initializable {
 
     @FXML Button goBack;
     @FXML Button settingsButton;
@@ -33,6 +34,69 @@ public class MainLobby extends Application {
     @FXML Button playButton;
     @FXML Button prizesButton;
     @FXML Button creditsButton;
+    @FXML Arc pink1;    @FXML Arc cyan1;    @FXML Arc purple1;    @FXML Arc yellow1;
+    @FXML Arc pink2;    @FXML Arc cyan2;    @FXML Arc purple2;    @FXML Arc yellow2;
+    @FXML Arc pink3;    @FXML Arc cyan3;    @FXML Arc purple3;    @FXML Arc yellow3;
+
+    // Static because FXMLloader.load() returns a new 'Parent' type object and we want to keep a check on 'isHomeScreen' attribute across all the instances
+    static boolean isHomeScreen = true;
+
+    ArrayList<RotateTransition> rotateTransitions;
+
+
+        //      The constructor is called first, then any @FXML annotated fields are populated, then initialize() is called.
+        //      Therefore the constructor does not have access to @FXML fields referring to components defined in the .fxml file,
+        //      while initialize() does have access to them.
+//    MainLobby(){
+//        return;
+//    }
+
+        //      helper function to initialize to rotate the individual shapes
+    void helperInitialize(Shape shape, int x, int y,int duration){
+        //      x is half the radius here
+        shape.getTransforms().add(new Translate(-x,-y));
+        shape.setTranslateX(x);
+        shape.setTranslateY(y);
+
+        //      set Axis of Rotation (already set in Scene Builder, so not setting it here)
+        //      negative sign reverses direction of rotation
+        //      shape.setRotationAxis(new Point3D(0,0,-1));
+        RotateTransition rt = new RotateTransition();
+        rotateTransitions.add(rt);
+        //      Linear Interpolator makes the rotation go smoothly i.e. no speed up during
+        //      beginning and no slow down in the end
+        rt.setInterpolator(Interpolator.LINEAR);
+        rt.setDuration(Duration.millis(duration));
+        rt.setNode(shape);
+        rt.setCycleCount(10000);
+        rt.setByAngle(360);
+        rt.setAutoReverse(false);
+        rt.play();
+    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        if(this.isHomeScreen == false){
+            return;
+        }
+        rotateTransitions = new ArrayList<>();
+
+        helperInitialize(pink1,-35,35,3000);
+        helperInitialize(cyan1,35,35,3000);
+        helperInitialize(yellow1,35,-35,3000);
+        helperInitialize(purple1,-35,-35,3000);
+
+        helperInitialize(pink2,-50,50,4000);
+        helperInitialize(cyan2,50,50,4000);
+        helperInitialize(yellow2,50,-50,4000);
+        helperInitialize(purple2,-50,-50,4000);
+
+        helperInitialize(pink3,-70,70,4500);
+        helperInitialize(cyan3,70,70,4500);
+        helperInitialize(yellow3,70,-70,4500);
+        helperInitialize(purple3,-70,-70,4500);
+
+        this.isHomeScreen = false;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -66,7 +130,7 @@ public class MainLobby extends Application {
         Ball b = new Ball(c,star,root);
 
         //Add all Elements to root node
-        for(Shape x: c.components) {
+        for(Shape x: s.components) {
             root.getChildren().add(x);
         }
         root.getChildren().addAll(b.getShape(), star.getShape());
@@ -96,6 +160,7 @@ public class MainLobby extends Application {
     }
 
     public void goBackButtonPushed(ActionEvent event) throws IOException {
+        this.isHomeScreen = true;
         Parent root = FXMLLoader.load(getClass().getResource("MainLobby.fxml" ));
         Scene mainLobby = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
