@@ -9,26 +9,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainLobby extends Application implements Initializable {
 
-    @FXML Button goBack;
     @FXML Button settingsButton;
     @FXML Button statsButton;
     @FXML Button playButton;
@@ -38,10 +33,6 @@ public class MainLobby extends Application implements Initializable {
     @FXML Arc pink2;    @FXML Arc cyan2;    @FXML Arc purple2;    @FXML Arc yellow2;
     @FXML Arc pink3;    @FXML Arc cyan3;    @FXML Arc purple3;    @FXML Arc yellow3;
 
-    // Static because FXMLloader.load() returns a new 'Parent' type object and we want to keep a check on 'isHomeScreen' attribute across all the instances
-    static boolean isHomeScreen = true;
-
-    ArrayList<RotateTransition> rotateTransitions;
 
 
         //      The constructor is called first, then any @FXML annotated fields are populated, then initialize() is called.
@@ -52,7 +43,7 @@ public class MainLobby extends Application implements Initializable {
 //    }
 
         //      helper function to initialize to rotate the individual shapes
-    void helperInitialize(Shape shape, int x, int y,int duration){
+    void rotateHelper(Shape shape, int x, int y, int duration){
         //      x is half the radius here
         shape.getTransforms().add(new Translate(-x,-y));
         shape.setTranslateX(x);
@@ -62,7 +53,6 @@ public class MainLobby extends Application implements Initializable {
         //      negative sign reverses direction of rotation
         //      shape.setRotationAxis(new Point3D(0,0,-1));
         RotateTransition rt = new RotateTransition();
-        rotateTransitions.add(rt);
         //      Linear Interpolator makes the rotation go smoothly i.e. no speed up during
         //      beginning and no slow down in the end
         rt.setInterpolator(Interpolator.LINEAR);
@@ -75,27 +65,20 @@ public class MainLobby extends Application implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        if(this.isHomeScreen == false){
-            return;
-        }
-        rotateTransitions = new ArrayList<>();
+        rotateHelper(pink1,-35,35,3000);
+        rotateHelper(cyan1,35,35,3000);
+        rotateHelper(yellow1,35,-35,3000);
+        rotateHelper(purple1,-35,-35,3000);
 
-        helperInitialize(pink1,-35,35,3000);
-        helperInitialize(cyan1,35,35,3000);
-        helperInitialize(yellow1,35,-35,3000);
-        helperInitialize(purple1,-35,-35,3000);
+        rotateHelper(pink2,-50,50,4000);
+        rotateHelper(cyan2,50,50,4000);
+        rotateHelper(yellow2,50,-50,4000);
+        rotateHelper(purple2,-50,-50,4000);
 
-        helperInitialize(pink2,-50,50,4000);
-        helperInitialize(cyan2,50,50,4000);
-        helperInitialize(yellow2,50,-50,4000);
-        helperInitialize(purple2,-50,-50,4000);
-
-        helperInitialize(pink3,-70,70,4500);
-        helperInitialize(cyan3,70,70,4500);
-        helperInitialize(yellow3,70,-70,4500);
-        helperInitialize(purple3,-70,-70,4500);
-
-        this.isHomeScreen = false;
+        rotateHelper(pink3,-70,70,4500);
+        rotateHelper(cyan3,70,70,4500);
+        rotateHelper(yellow3,70,-70,4500);
+        rotateHelper(purple3,-70,-70,4500);
     }
 
     @Override
@@ -111,39 +94,6 @@ public class MainLobby extends Application implements Initializable {
         launch(args);
     }
 
-    // Start playing game from here, will be called after loading the game and setting the
-    // required attributes (like objects,stars, position of ball, angle of rotation of obstacles already present).
-    public Scene startGame(){
-        //CREATE ROOT NODE
-        Group root = new Group();
-
-        //CREATE OBJECT
-        ringSmall s = new ringSmall();
-        ringMedium m = new ringMedium();
-        ringLarge l = new ringLarge();
-        SquareLine sql = new SquareLine();
-        DiamondLine dl = new DiamondLine();
-        LeftCross lc = new LeftCross();
-        RightCross rc = new RightCross();
-        ColorSwitch c = new ColorSwitch(250, 250);
-        Star star = new Star(250, 150);
-        Ball b = new Ball(c,star,root);
-
-        //Add all Elements to root node
-        for(Shape x: s.components) {
-            root.getChildren().add(x);
-        }
-        root.getChildren().addAll(b.getShape(), star.getShape());
-        Scene scene = new Scene(root, 500, 700, Color.GREY);
-
-        return scene;
-    }
-
-    public void startNewGame(ActionEvent event) throws IOException {
-        Scene gameplayScene = startGame();
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(gameplayScene);
-    }
 
     public void settingsButtonPushed(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Settings.fxml" ));
@@ -153,18 +103,14 @@ public class MainLobby extends Application implements Initializable {
     }
 
     public void statsButtonPushed(ActionEvent event) throws IOException {
+        if(!SelectPlayer.isLoggedIn()){
+            SelectPlayer.notLoggedInError();
+            return;
+        }
         Parent root = FXMLLoader.load(getClass().getResource("Stats.fxml"));
         Scene statsScene = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(statsScene);
-    }
-
-    public void goBackButtonPushed(ActionEvent event) throws IOException {
-        this.isHomeScreen = true;
-        Parent root = FXMLLoader.load(getClass().getResource("MainLobby.fxml" ));
-        Scene mainLobby = new Scene(root);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(mainLobby);
     }
 
     public void playButtonPushed(ActionEvent event) throws IOException {

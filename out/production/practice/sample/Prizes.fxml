@@ -5,11 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainLobby">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Prizes">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -37,20 +39,16 @@
                   </Label>
                </children>
             </HBox>
-            <HBox prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+            <HBox prefHeight="300.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Region prefHeight="148.0" prefWidth="500.0" />
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="spinButton1" mnemonicParsing="false" prefHeight="88.0" prefWidth="102.0" style="-fx-background-radius: 100;" text="Spin" textAlignment="CENTER">
-                     <font>
-                        <Font name="Baskerville Old Face" size="28.0" />
-                     </font>
-                  </Button>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <Pane prefHeight="300.0" prefWidth="500.0">
+                     <children>
+                        <Arc fx:id="spinPink1" fill="#ba07ba" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="315.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="spinPurple1" fill="#72099e" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="spinPink2" fill="#ba07ba" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="135.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="spinPurple2" fill="#72099e" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="225.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                     </children>
+                  </Pane>
                </children>
             </HBox>
             </children></VBox>
@@ -59,7 +57,13 @@
     <bottom>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                <Region prefHeight="100.0" prefWidth="110.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="spinButton1" mnemonicParsing="false" onAction="#spinButtonClicked" prefHeight="88.0" prefWidth="102.0" style="-fx-background-radius: 100;" text="Spin" textAlignment="CENTER">
+               <font>
+                  <Font name="Baskerville Old Face" size="28.0" />
+               </font>
+            </Button>
+            <Region prefHeight="100.0" prefWidth="65.0" />
                 <Button fx:id="goBack" mnemonicParsing="false" onAction="#goBackButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Go Back">
                     <font>
                         <Font name="Baskerville Old Face" size="18.0" />

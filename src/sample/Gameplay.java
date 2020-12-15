@@ -3,17 +3,22 @@ package sample;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public final class GamePlay implements Serializable {
+public final class Gameplay implements Serializable {
     private Ball ball;
     private ArrayList<ObstacleCombination> allObstacleCombinations;
     private ArrayList<ObstacleCombination> currentObstacleCombinations;
     private ArrayList<ColorSwitch> currentColourSwitches;
     private final static long SerialVersionUID = 42L;
+    public UserProfile user;
 
-    public void createGame() {}
-    public void saveGame() {}
-    public void loadGame() {}
-    public void endGame() {}
+    Gameplay(UserProfile user){
+        this.user = user;
+    }
+
+    public static void createGame() {}
+    public static void saveGame() {}
+    public static void loadGame() {}
+    public static void endGame() {}
 
     private void serializable(){}
     private void deserializable(){}
