@@ -23,18 +23,19 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SelectPlayer implements Initializable {
     @FXML Button goBack;
+    // RadioButton is not serializable, so cannot use it in HashMaps and then serialize the mapping
     @FXML RadioButton userRadioButton1; @FXML   RadioButton userRadioButton2;   @FXML      RadioButton userRadioButton3;
     @FXML RadioButton userRadioButton4;   @FXML   RadioButton userRadioButton5;
     @FXML ToggleGroup chooseGameGroup;
 
-    // stores which button is mapped to which user
-    HashMap<RadioButton,Gameplay> buttonToGamePlayMapping;
+    // map integers to buttons and store which integer maps to which gameplay.
+    public static HashMap<Integer,Gameplay> numberToGamePlayMapping;// this mapping is saved in 'saveData.txt'
+    public static HashMap<Integer, RadioButton> numberToButtonMapping;// this mapping is created everytime we change scene to 'SelectPlayer.fxml'
+    private boolean loadFromFile = true;
 
     public static UserProfile currentUser;
     public static Gameplay currentGameplay;
@@ -42,12 +43,42 @@ public class SelectPlayer implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        gameplays = new ArrayList<>(5);
-        buttonToGamePlayMapping = new HashMap<>();
+
+        numberToButtonMapping = new HashMap<>();
+        numberToButtonMapping.put(1,userRadioButton1);
+        numberToButtonMapping.put(2,userRadioButton2);
+        numberToButtonMapping.put(3,userRadioButton3);
+        numberToButtonMapping.put(4,userRadioButton4);
+        numberToButtonMapping.put(5,userRadioButton5);
+
+        gameplays = new ArrayList<>();
 
         // set Loaded Games names
+        System.out.println("loadfromFile: "+loadFromFile);
+        if(loadFromFile){
+            try{
+                MainLobby.deserialize();
+            } catch (IOException e){
 
+            } catch (ClassNotFoundException e){
 
+            } finally{
+                loadFromFile = false;
+            }
+//            System.out.println(gameplays.toString());
+        }
+
+        if(numberToGamePlayMapping != null){
+            System.out.println("numberToGamePlayMapping: NOT NULL");
+            System.out.println(numberToGamePlayMapping.toString());
+            for(Map.Entry<Integer,Gameplay> entry: numberToGamePlayMapping.entrySet()){
+                String username = entry.getValue().getUser().getUsername();
+                numberToButtonMapping.get(entry.getKey()).setText(username);
+            }
+        }
+        else{
+            System.out.println("numberToGamePlayMapping: null");
+        }
     }
 
     // Start playing game from here, will be called after loading the game and setting the
@@ -86,7 +117,14 @@ public class SelectPlayer implements Initializable {
         if(selectedRadioButton.getText().equals("EMPTY")){
             return;
         }
-        SelectPlayer.setCurrentGameplay(buttonToGamePlayMapping.get(selectedRadioButton));
+        // check which number maps to selected RadioButton
+        int num=0;
+        for(num=1;num<=5;num++){
+            if(numberToButtonMapping.get(num).equals(selectedRadioButton)){
+                break;
+            }
+        }
+        SelectPlayer.setCurrentGameplay(numberToGamePlayMapping.get(num));
     }
 
     public void startGamePlayButtonPushed(ActionEvent event) throws IOException {
@@ -97,8 +135,8 @@ public class SelectPlayer implements Initializable {
 
     public void newGameButtonPushed(ActionEvent event) throws IOException {
         //check if new account can be make
-        RadioButton emptyRadioButton;
-        if((emptyRadioButton = emptyRadioButton()) == null){
+        Integer radioButtonNumber;
+        if((radioButtonNumber = emptyRadioButton()) == -1){
             return;
         }
 
@@ -106,12 +144,18 @@ public class SelectPlayer implements Initializable {
 
         UserProfile newUser = new UserProfile("default","defaultName","defaultPassword");
 
+        System.out.println("BEFORE NEW GAME BUTTON PUSHED");
+        System.out.println(numberToGamePlayMapping.toString());
         Gameplay gameplay = new Gameplay(newUser);
         // Register the new account to the database
+        System.out.println("gameplays: "+gameplays);
+        System.out.println("gameplays.size(): "+gameplays.size());
         gameplays.add(gameplay);
-        buttonToGamePlayMapping.put(emptyRadioButton,gameplay);
+        numberToGamePlayMapping.put(radioButtonNumber,gameplay);
         currentUser = newUser;
-        emptyRadioButton.setText(currentUser.getUsername());
+        numberToButtonMapping.get(radioButtonNumber).setText(currentUser.getUsername());
+        System.out.println("AFTER NEW GAME BUTTON PUSHED");
+        System.out.println(numberToGamePlayMapping.toString());
     }
 
     public void goBackButtonPushed(ActionEvent event) throws IOException {
@@ -122,23 +166,23 @@ public class SelectPlayer implements Initializable {
     }
 
     //checks which RadioButton is free
-    RadioButton emptyRadioButton(){
+    Integer emptyRadioButton(){
         if(userRadioButton1.getText().equals("EMPTY")){
-            return userRadioButton1;
+            return 1;
         }
         else if(userRadioButton2.getText().equals("EMPTY")){
-            return userRadioButton2;
+            return 2;
         }
         else if(userRadioButton3.getText().equals("EMPTY")){
-            return userRadioButton3;
+            return 3;
         }
         else if(userRadioButton4.getText().equals("EMPTY")){
-            return userRadioButton4;
+            return 4;
         }
         else if(userRadioButton5.getText().equals("EMPTY")){
-            return userRadioButton5;
+            return 5;
         }
-        return null;
+        return -1;
     }
 
     public static boolean isLoggedIn(){

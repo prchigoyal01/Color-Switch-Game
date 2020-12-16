@@ -13,16 +13,21 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-public class MainLobby extends Application implements Initializable {
+public class MainLobby extends Application implements Initializable, Serializable {
 
     @FXML Button settingsButton;
     @FXML Button statsButton;
@@ -89,8 +94,67 @@ public class MainLobby extends Application implements Initializable {
         primaryStage.show();
     }
 
+    // Runs the code before closing the Stage
+    @Override
+    public void stop() throws IOException{
+        System.out.println("Stage is closing");
+        // Save file
+        serialize();
+    }
 
-    public static void main(String[] args) {
+    public static void serialize() throws IOException{
+        ObjectOutputStream out = null;
+
+        try{
+            out = new ObjectOutputStream( new FileOutputStream("savedData.txt"));
+            out.writeObject(SelectPlayer.gameplays);
+
+            if(SelectPlayer.numberToGamePlayMapping != null){
+                for(Map.Entry<Integer,Gameplay> entry: SelectPlayer.numberToGamePlayMapping.entrySet()){
+                    System.out.println("AAAA "+entry.getKey()+" " + entry.getValue());
+                }
+            }
+            else{
+                System.out.println("SelectPlayer.buttonToGameplayMapping: null");
+            }
+            out.writeObject(SelectPlayer.numberToGamePlayMapping);
+        }
+        finally{
+            out.close();
+        }
+    }
+
+    // When the app runs for the first time,'savedData.txt' is not present so it results in IOException.
+    public static void deserialize() throws IOException, ClassNotFoundException{
+        ObjectInputStream in = null;
+
+        HashMap<Integer,Gameplay> savedMappings = new HashMap<>();
+        ArrayList<Gameplay> savedGameplays = new ArrayList<>();
+        try{
+            in = new ObjectInputStream(new FileInputStream("savedData.txt"));
+            System.out.println("in: "+in);
+            savedGameplays = (ArrayList<Gameplay>) in.readObject();
+            savedMappings = (HashMap<Integer,Gameplay>) in.readObject();
+        } catch( IOException e){
+            System.out.println("Cannot find the file.");
+        }
+        finally{
+            if(in != null){
+                in.close();
+            }
+            SelectPlayer.gameplays = savedGameplays;
+            SelectPlayer.numberToGamePlayMapping = savedMappings;
+
+            if(SelectPlayer.numberToGamePlayMapping != null){
+                for(Map.Entry<Integer,Gameplay> entry: SelectPlayer.numberToGamePlayMapping.entrySet()){
+                    System.out.println("BBBB "+entry.getKey()+" " + entry.getValue());
+                }
+            }
+        }
+    }
+
+
+        public static void main(String[] args) {
         launch(args);
     }
 

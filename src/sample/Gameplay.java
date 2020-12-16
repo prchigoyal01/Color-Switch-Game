@@ -22,5 +22,9 @@ public final class Gameplay implements Serializable {
 
     private void serializable(){}
     private void deserializable(){}
+
+    public UserProfile getUser() {
+        return user;
+    }
 }
 
