@@ -25,7 +25,7 @@ public final class ColorSwitch extends GameObject{
         UL.setRadiusY(20);
         UL.setLength(90);
         UL.setStartAngle(90);
-        UL.setFill(Color.CYAN);
+        UL.setFill(Color.BLUE);
         UL.setType(ArcType.ROUND);
 
         Arc BL = new Arc();
@@ -35,7 +35,7 @@ public final class ColorSwitch extends GameObject{
         BL.setRadiusY(20);
         BL.setLength(90);
         BL.setStartAngle(180);
-        BL.setFill(Color.YELLOW);
+        BL.setFill(Color.GOLD);
         BL.setType(ArcType.ROUND);
 
         Arc UR = new Arc();
@@ -45,7 +45,7 @@ public final class ColorSwitch extends GameObject{
         UR.setRadiusY(20);
         UR.setLength(90);
         UR.setStartAngle(0);
-        UR.setFill(Color.DEEPPINK);
+        UR.setFill(Color.MAGENTA);
         UR.setType(ArcType.ROUND);
 
         Arc BR = new Arc();
@@ -55,7 +55,7 @@ public final class ColorSwitch extends GameObject{
         BR.setRadiusY(20);
         BR.setLength(90);
         BR.setStartAngle(270);
-        BR.setFill(Color.PURPLE);
+        BR.setFill(Color.VIOLET);
         BR.setType(ArcType.ROUND);
 
         components.add(UL);

@@ -16,8 +16,13 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.Group;
 import javafx.util.Duration;
+
+import javax.net.ssl.SNIHostName;
 
 public final class Ball extends GameObject {
     private Shape shape;
@@ -30,6 +35,8 @@ public final class Ball extends GameObject {
     protected TranslateTransition moveDown;
     protected TranslateTransition moveUp;
     private ParallelTransition pt;
+    private Random rand;
+    private Color[] colors;
 
     Ball(Group root, Scene scene) {
         this.X = 250;
@@ -39,6 +46,8 @@ public final class Ball extends GameObject {
         this.color = Color.CYAN;
         this.root = root;
         this.scene = scene;
+        this.rand = new Random();
+        this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
 
         draw();
         motion();
@@ -48,6 +57,7 @@ public final class Ball extends GameObject {
 
     @Override
     public void draw() {
+        this.color = colors[rand.nextInt(4)];
         Circle c = new Circle(this.X, this.Y, 10, this.color);
         this.shape = c;
     }
@@ -67,13 +77,22 @@ public final class Ball extends GameObject {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                collides();
             }
         }.start();
     }
 
     public void mini_move_up() {
     }
-    private void collides(){}
+    private void collides(){
+        Bounds bound = this.shape.getBoundsInParent();
+        for(Node x : this.root.getChildren()) {
+            if(x instanceof Shape && this.shape.intersects(x.getBoundsInParent())) {
+
+            }
+        }
+    }
+
     private void destroy(){}
     private void updateScore(){}
 }

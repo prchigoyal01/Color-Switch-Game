@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -87,7 +88,7 @@ public class SelectPlayer implements Initializable {
         UserProfile player = new UserProfile("player", "player", "player");
         Gameplay game = new Gameplay(player, root,null);
 
-        System.out.println("CURRENT GAMEPLAY: "+currentGameplay);
+        System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
         //CREATE OBJECT
         ringSmall s = new ringSmall();
@@ -105,8 +106,17 @@ public class SelectPlayer implements Initializable {
         root.getChildren().add(game.getBall().getShape());
         Scene scene = new Scene(root, 500, 700, Color.GREY);
 
+        for(Shape x : c.components) {
+            root.getChildren().add(x);
+        }
+
         //MouseEvent
-        scene.setOnMouseClicked(e -> game.getBall().mini_move_up());
+        scene.setOnMouseClicked(e -> {
+            System.out.println("clicked");
+            game.getBall().moveUp.setByY(-100);
+            game.getBall().moveUp.play();
+            System.out.println(b.getShape().getTranslateY());
+        });
 
         return scene;
     }
