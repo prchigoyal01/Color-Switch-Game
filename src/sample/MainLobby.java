@@ -134,7 +134,13 @@ public class MainLobby extends Application implements Initializable, Serializabl
             in = new ObjectInputStream(new FileInputStream("savedData.txt"));
             System.out.println("in: "+in);
             savedGameplays = (ArrayList<Gameplay>) in.readObject();
+            if(savedGameplays == null){
+                savedGameplays = new ArrayList<>();
+            }
             savedMappings = (HashMap<Integer,Gameplay>) in.readObject();
+            if(savedMappings == null){
+                savedMappings = new HashMap<>();
+            }
         } catch( IOException e){
             System.out.println("Cannot find the file.");
         }
