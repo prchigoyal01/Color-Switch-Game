@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -85,9 +86,10 @@ public class SelectPlayer implements Initializable {
     // required attributes (like objects,stars, position of ball, angle of rotation of obstacles already present).
     public Scene startGame(){
         //CREATE ROOT NODE
-        Group root = new Group();
-        UserProfile player = new UserProfile("player", "player", "player");
-        Gameplay game = new Gameplay(player, root);
+        Gameplay game = currentGameplay;
+
+        Group root = game.getRoot();
+        Scene scene = game.getScene();
 
         //CREATE OBJECT
         ringSmall s = new ringSmall();
@@ -99,14 +101,18 @@ public class SelectPlayer implements Initializable {
         RightCross rc = new RightCross();
         ColorSwitch c = new ColorSwitch(250, 250);
         Star star = new Star(250, 150);
-        Ball b = new Ball(root);
+        Ball b = game.getBall();
 
         //Add all Elements to root node
         root.getChildren().add(game.getBall().getShape());
-        Scene scene = new Scene(root, 500, 700, Color.GREY);
 
         //MouseEvent
-        scene.setOnMouseClicked(e -> game.getBall().mini_move_up());
+        scene.setOnMouseClicked(e -> {
+            System.out.println("clicked");
+            game.getBall().moveUp.setByY(-100);
+            game.getBall().moveUp.play();
+            System.out.println(b.getShape().getTranslateY());
+        });
 
         return scene;
     }
@@ -148,13 +154,15 @@ public class SelectPlayer implements Initializable {
 
         System.out.println("BEFORE NEW GAME BUTTON PUSHED");
         System.out.println(numberToGamePlayMapping.toString());
-        Gameplay gameplay = new Gameplay(newUser, new Group());
+        Group root = new Group();
+        Gameplay gameplay = new Gameplay(newUser, root, new Scene(root, 500, 700, Color.GREY));
         // Register the new account to the database
         System.out.println("gameplays: "+gameplays);
         System.out.println("gameplays.size(): "+gameplays.size());
         gameplays.add(gameplay);
         numberToGamePlayMapping.put(radioButtonNumber,gameplay);
         currentUser = newUser;
+        currentGameplay = gameplay;
         numberToButtonMapping.get(radioButtonNumber).setText(currentUser.getUsername());
         System.out.println("AFTER NEW GAME BUTTON PUSHED");
         System.out.println(numberToGamePlayMapping.toString());
