@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -48,19 +49,14 @@ public final class Ball extends GameObject {
 
     @Override
     public void motion() {
-        tt.setByY(this.YBase - this.Y);
-        //tt.setCycleCount(Animation.INDEFINITE);
+        new AnimationTimer() {
+            long time = System.currentTimeMillis();
 
-        this.shape.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             @Override
-            public void changed(ObservableValue<? extends Bounds> observableValue, Bounds bounds, Bounds t1) {
-                for(Node s: root.getChildren()) {
+            public void handle(long l) {
 
-                }
             }
-        });
-        tt.setDuration(Duration.millis(5000));
-        tt.play();
+        }.start();
     }
 
     public void mini_move_up() {
