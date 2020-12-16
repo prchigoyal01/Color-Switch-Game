@@ -8,7 +8,7 @@ import javafx.scene.shape.Shape;
 import java.io.Serializable;
 
 public final class Star extends GameObject {
-    private Shape shape;
+    private transient Shape shape;
 
     Star(int X, int Y) {
         this.X = X;

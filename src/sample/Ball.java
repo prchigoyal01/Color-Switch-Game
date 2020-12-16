@@ -25,18 +25,17 @@ import javafx.util.Duration;
 import javax.net.ssl.SNIHostName;
 
 public final class Ball extends GameObject {
-    private Shape shape;
+    private transient Shape shape;
     private int score;
     private int YMin;
     private int YBase;
-    private Color color;
-    private Group root;
-    private Scene scene;
-    protected TranslateTransition moveDown;
-    protected TranslateTransition moveUp;
-    private ParallelTransition pt;
-    private Random rand;
-    private Color[] colors;
+    private transient Color color;
+    private transient Group root;
+    private transient Scene scene;
+    protected transient TranslateTransition moveDown;
+    protected transient TranslateTransition moveUp;
+    private transient static Random rand = new Random();
+    private transient Color[] colors;
 
     Ball(Group root, Scene scene) {
         this.X = 250;
@@ -46,7 +45,6 @@ public final class Ball extends GameObject {
         this.color = Color.CYAN;
         this.root = root;
         this.scene = scene;
-        this.rand = new Random();
         this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
 
         draw();

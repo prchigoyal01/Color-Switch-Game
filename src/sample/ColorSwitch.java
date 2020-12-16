@@ -8,7 +8,7 @@ import javafx.scene.shape.Shape;
 import java.util.ArrayList;
 
 public final class ColorSwitch extends GameObject{
-    ArrayList<Shape> components;
+    transient ArrayList<Shape> components;
 
     ColorSwitch(int X, int Y) {
         components = new ArrayList<Shape>();

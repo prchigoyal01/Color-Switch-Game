@@ -13,8 +13,8 @@ public final class Gameplay implements Serializable {
     private ArrayList<ColorSwitch> currentColourSwitches;
     private final static long SerialVersionUID = 42L;
     public UserProfile user;
-    private Group root;
-    private Scene scene;
+    private transient Group root;
+    private transient Scene scene;
 
     Gameplay(UserProfile user, Group root, Scene scene){
         this.user = user;
