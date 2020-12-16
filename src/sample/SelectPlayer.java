@@ -86,6 +86,8 @@ public class SelectPlayer implements Initializable {
     public Scene startGame(){
         //CREATE ROOT NODE
         Group root = new Group();
+        UserProfile player = new UserProfile("player", "player", "player");
+        Gameplay game = new Gameplay(player, root);
 
         //CREATE OBJECT
         ringSmall s = new ringSmall();
@@ -97,14 +99,14 @@ public class SelectPlayer implements Initializable {
         RightCross rc = new RightCross();
         ColorSwitch c = new ColorSwitch(250, 250);
         Star star = new Star(250, 150);
-        Ball b = new Ball(c,star,root);
+        Ball b = new Ball(root);
 
         //Add all Elements to root node
-        for(Shape x: s.components) {
-            root.getChildren().add(x);
-        }
-        root.getChildren().addAll(b.getShape(), star.getShape());
+        root.getChildren().add(game.getBall().getShape());
         Scene scene = new Scene(root, 500, 700, Color.GREY);
+
+        //MouseEvent
+        scene.setOnMouseClicked(e -> game.getBall().mini_move_up());
 
         return scene;
     }
@@ -146,7 +148,7 @@ public class SelectPlayer implements Initializable {
 
         System.out.println("BEFORE NEW GAME BUTTON PUSHED");
         System.out.println(numberToGamePlayMapping.toString());
-        Gameplay gameplay = new Gameplay(newUser);
+        Gameplay gameplay = new Gameplay(newUser, new Group());
         // Register the new account to the database
         System.out.println("gameplays: "+gameplays);
         System.out.println("gameplays.size(): "+gameplays.size());

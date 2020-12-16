@@ -1,10 +1,13 @@
 package sample;
 
+import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
@@ -19,21 +22,19 @@ public final class Ball extends GameObject {
     private int YMin;
     private int YBase;
     private Color color;
-    private ColorSwitch cs;
-    private Star s;
+    private TranslateTransition tt;
     Group root;
 
-    Ball(ColorSwitch cs, Star s, Group root) {
+    Ball(Group root) {
         this.X = 250;
         this.YBase = 600;
-        this.Y = this.YBase;
-        this.YMin = 180;
+        this.Y = 600;
+        this.YMin = 500;
         this.color = Color.CYAN;
-        this.cs = cs;
-        this.s=s;
         this.root=root;
 
         draw();
+        this.tt = new TranslateTransition(Duration.millis(1000), this.shape);
         motion();
     }
 
@@ -47,28 +48,28 @@ public final class Ball extends GameObject {
 
     @Override
     public void motion() {
-        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), this.shape);
-        tt.setToY(-500);
-        tt.setCycleCount(1);
+        tt.setByY(this.YBase - this.Y);
+        //tt.setCycleCount(Animation.INDEFINITE);
 
         this.shape.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             @Override
             public void changed(ObservableValue<? extends Bounds> observableValue, Bounds bounds, Bounds t1) {
-                if (((Path) Shape.intersect(shape, s.getShape())).getElements().size() > 0) {
-                    tt.stop();
-                    root.getChildren().remove(shape);
-                }
-                for(Shape x: cs.components) {
-                    if (((Path) Shape.intersect(shape, x)).getElements().size() > 0) {
-                        shape.setFill(Color.DEEPPINK);
-                    }
+                for(Node s: root.getChildren()) {
+
                 }
             }
         });
+        tt.setDuration(Duration.millis(5000));
         tt.play();
     }
 
-    private void mini_move_up() {}
+    public void mini_move_up() {
+        this.Y -= 100;
+        tt.setToY(this.Y);
+        System.out.println("clicked");
+        System.out.println(this.Y);
+        tt.play();
+    }
     private void collides(){}
     private void destroy(){}
     private void updateScore(){}

@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
@@ -92,7 +93,7 @@ final class ringSmall extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(false);
             rt.play();
@@ -161,7 +162,7 @@ final class ringMedium extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(true);
             rt.play();
@@ -230,7 +231,7 @@ final class ringLarge extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(false);
             rt.play();
@@ -283,7 +284,7 @@ final class LeftCross extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(true);
             rt.play();
@@ -336,7 +337,7 @@ final class RightCross extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(false);
             rt.play();
@@ -390,7 +391,7 @@ final class SquareLine extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(false);
             rt.play();
@@ -444,7 +445,7 @@ final class DiamondLine extends ObstacleObject {
             RotateTransition rt = new RotateTransition();
             rt.setDuration(Duration.millis(5000));
             rt.setNode(x);
-            rt.setCycleCount(10000);
+            rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
             rt.setAutoReverse(false);
             rt.play();
