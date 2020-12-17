@@ -58,29 +58,29 @@ final class LeftCross extends ObstacleObject {
     }
     @Override
     public void draw() {
-        Line l1 = new Line(X,Y, X, Y + 50);
+        Line l1 = new Line(X,Y, X, Y + 100);
         l1.setStrokeWidth(20);
         l1.setStrokeLineCap(StrokeLineCap.ROUND);
         l1.setStroke(Color.YELLOW);
-        movePivot(l1, 0, -25);
+        movePivot(l1, 0, -50);
 
-        Line l2 = new Line(X,Y,  X, Y - 50);
+        Line l2 = new Line(X,Y,  X, Y - 100);
         l2.setStrokeWidth(20);
         l2.setStrokeLineCap(StrokeLineCap.ROUND);
         l2.setStroke(Color.CYAN);
-        movePivot(l2, 0, 25);
+        movePivot(l2, 0, 50);
 
-        Line l3 = new Line(X,Y,X + 50, Y );
+        Line l3 = new Line(X,Y,X + 100, Y );
         l3.setStrokeWidth(20);
         l3.setStrokeLineCap(StrokeLineCap.ROUND);
         l3.setStroke(Color.PURPLE);
-        movePivot(l3, -25, 0);
+        movePivot(l3, -50, 0);
 
-        Line l4 = new Line(X,Y, X - 50, Y);
+        Line l4 = new Line(X,Y, X - 100, Y);
         l4.setStrokeWidth(20);
         l4.setStrokeLineCap(StrokeLineCap.ROUND);
         l4.setStroke(Color.DEEPPINK);
-        movePivot(l4, 25, 0);
+        movePivot(l4, 50, 0);
 
         components.add(l1);
         components.add(l4);
@@ -111,29 +111,29 @@ final class RightCross extends ObstacleObject {
     }
     @Override
     public void draw() {
-        Line l1 = new Line(X,Y, X, Y + 50);
+        Line l1 = new Line(X,Y, X, Y + 100);
         l1.setStrokeWidth(20);
         l1.setStrokeLineCap(StrokeLineCap.ROUND);
         l1.setStroke(Color.YELLOW);
-        movePivot(l1, 0, -25);
+        movePivot(l1, 0, -50);
 
-        Line l2 = new Line(X,Y,  X, Y - 50);
+        Line l2 = new Line(X,Y,  X, Y - 100);
         l2.setStrokeWidth(20);
         l2.setStrokeLineCap(StrokeLineCap.ROUND);
         l2.setStroke(Color.CYAN);
-        movePivot(l2, 0, 25);
+        movePivot(l2, 0, 50);
 
-        Line l3 = new Line(X,Y,X + 50, Y );
+        Line l3 = new Line(X,Y,X + 100, Y );
         l3.setStrokeWidth(20);
         l3.setStrokeLineCap(StrokeLineCap.ROUND);
         l3.setStroke(Color.PURPLE);
-        movePivot(l3, -25, 0);
+        movePivot(l3, -50, 0);
 
-        Line l4 = new Line(X,Y, X - 50, Y);
+        Line l4 = new Line(X,Y, X - 100, Y);
         l4.setStrokeWidth(20);
         l4.setStrokeLineCap(StrokeLineCap.ROUND);
         l4.setStroke(Color.DEEPPINK);
-        movePivot(l4, 25, 0);
+        movePivot(l4, 50, 0);
 
         components.add(l1);
         components.add(l4);

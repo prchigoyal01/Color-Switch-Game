@@ -24,7 +24,13 @@ public abstract class ObstacleCombination extends GameObject{
 
     protected void destroy() {
         for(Shape x: components) {
-            x.setTranslateY(Y - 1000);
+            if(x.getTranslateY() >= 1800) {
+                TranslateTransition tt1 = new TranslateTransition();
+                tt1.setDuration(Duration.millis(1));
+                tt1.setNode(x);
+                tt1.setByY(-2500);
+                tt1.play();
+            }
         }
     }
     //Combinations inherit ObstacleCombination and are made with union of various obstacle objects and a star
@@ -55,9 +61,6 @@ final class SquareLineStar extends ObstacleCombination {
             tt.setNode(x);
             tt.setByY(50);
             tt.play();
-            if(x.getTranslateY() > 1800) {
-                x.setLayoutY(220);
-            }
         }
     }
 }
@@ -67,7 +70,7 @@ final class DiamondLineStar extends ObstacleCombination {
     DiamondLineStar(Group root) {
         super(root);
         this.X = 250;
-        this.Y = -380;
+        this.Y = -600;
         draw();
     }
     @Override
@@ -94,14 +97,14 @@ final class LeftCrossStar extends ObstacleCombination {
     LeftCross cross;
     LeftCrossStar(Group root) {
         super(root);
-        this.X = 200;
-        this.Y = -80;
+        this.X = 150;
+        this.Y = -300;
         draw();
     }
     @Override
     public void draw() {
         cross = new LeftCross(X, Y);
-        star = new Star(X + 50, Y);
+        star = new Star(X + 100, Y);
         components.addAll(cross.components);
         components.add(star.getShape());
     }
@@ -122,14 +125,14 @@ final class RightCrossStar extends ObstacleCombination {
     RightCross cross;
     RightCrossStar(Group root) {
         super(root);
-        this.X = 300;
-        this.Y = -680;
+        this.X = 350;
+        this.Y = -1000;
         draw();
     }
     @Override
     public void draw() {
         cross = new RightCross(X, Y);
-        star = new Star(X - 50, Y);
+        star = new Star(X - 100, Y);
         components.addAll(cross.components);
         components.add(star.getShape());
     }

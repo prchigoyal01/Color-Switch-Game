@@ -33,6 +33,7 @@ public final class Ball extends GameObject {
     private int YBase;
     private transient Color color;
     private transient Group root;
+    private transient Scene scene;
     protected transient TranslateTransition moveDown;
     protected transient TranslateTransition moveUp;
     private transient static Random rand = new Random();
@@ -41,11 +42,10 @@ public final class Ball extends GameObject {
     Ball(Group root) {
         this.X = 250;
         this.YBase = 0;
-        this.Y = 500;
+        this.Y = 600;
         this.YMin = 500;
         this.color = Color.CYAN;
         this.root = root;
-        this.rand = new Random();
         this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
 
         draw();
@@ -73,11 +73,12 @@ public final class Ball extends GameObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //collides();
+
+        collides();
     }
 
     public void mini_move_up() {
-        moveUp.setByY(-100);
+        moveUp.setByY(-50);
         moveUp.play();
     }
     public void collides(){
@@ -87,19 +88,22 @@ public final class Ball extends GameObject {
             Node x = itr.next();
             if(x instanceof Shape && !(x instanceof Circle) && x.getBoundsInParent().intersects(shape.getBoundsInParent())) {
                 if(intersectsObstacle((Shape) x)) {
+                    System.out.println("Collides with obstacle ->" + x.getBoundsInParent());
                     destroyBall = true;
                 }
-                else if(intersectsStar((Shape) x)) {
+                if(intersectsStar((Shape) x)) {
                     updateScore(x);
-                    itr.remove();
+                    System.out.println("Collides with star");
+                    System.out.println(score);
                 }
-                else if(intersectsColorSwitch((Shape) x)) {
+                if(intersectsColorSwitch((Shape) x)) {
+                    System.out.println("Collides with color switch");
                     changeColor();
                 }
             }
         }
         if(destroyBall) {
-            destroy();
+            destroy(shape);
         }
     }
     private boolean intersectsObstacle(Shape x) {
@@ -135,7 +139,7 @@ public final class Ball extends GameObject {
         Paint c = x.getFill();
         return c == Color.BEIGE || c == Color.MAGENTA || c == Color.VIOLET || c == Color.BLUE;
     }
-    private void destroy(){
+    private void destroy(Shape x){
         root.getChildren().remove(this.shape);
     }
     private void updateScore(Node x){

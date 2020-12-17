@@ -14,12 +14,11 @@ public final class ColorSwitch extends GameObject{
     ArrayList<Shape> components;
     private int YMove;
     private Group root;
-    protected static TranslateTransition move = new TranslateTransition(Duration.millis(160));
 
-    ColorSwitch(Group root) {
+    ColorSwitch(Group root, int X, int Y) {
         components = new ArrayList<Shape>();
-        this.X = 250;
-        this.Y = -980;
+        this.X = X;
+        this.Y = Y;
         this.YMove = 0;
         this.root = root;
         draw();
@@ -84,14 +83,17 @@ public final class ColorSwitch extends GameObject{
             tt.setNode(x);
             tt.setByY(50);
             tt.play();
-            if(x.getTranslateY() > 600) {
-                x.setTranslateY(-980);
-            }
         }
     }
     protected void destroy() {
         for(Shape x: components) {
-            x.setTranslateY(Y - 200);
+            if(x.getTranslateY() >= 1800) {
+                TranslateTransition tt1 = new TranslateTransition();
+                tt1.setDuration(Duration.millis(1));
+                tt1.setNode(x);
+                tt1.setByY(-2500);
+                tt1.play();
+            }
         }
     }
 }

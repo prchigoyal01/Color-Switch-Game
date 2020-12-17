@@ -91,6 +91,7 @@ public class SelectPlayer implements Initializable {
         Group root = new Group();
         UserProfile user = new UserProfile("p", "p", "p");
         Gameplay game = new Gameplay(user, root);
+        currentGameplay = game;
         Ball ball = game.getBall();
         System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
@@ -114,24 +115,35 @@ public class SelectPlayer implements Initializable {
             @Override
             public void handle(long l) {
                 ball.motion();
+                for(GameObject obj : game.getGameObjects()) {
+                    if(obj instanceof ObstacleCombination) {
+                        ObstacleCombination obstacle = (ObstacleCombination) obj;
+                        obstacle.destroy();
+                    }
+                    else if(obj instanceof ColorSwitch) {
+                        ColorSwitch c = (ColorSwitch) obj;
+//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
+                        c.destroy();
+                    }
+                }
+
+                //MouseEvent
+                scene.setOnMouseClicked(e -> {
+                    ball.mini_move_up();
+                    for(GameObject obj : game.getGameObjects()) {
+                        if(obj instanceof ObstacleCombination) {
+                            ObstacleCombination obstacle = (ObstacleCombination) obj;
+                            obstacle.motion();
+                        }
+                        else if(obj instanceof ColorSwitch) {
+                            ColorSwitch c = (ColorSwitch) obj;
+//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
+                            c.motion();
+                        }
+                    }
+                });
             }
         }.start();
-
-        //MouseEvent
-        scene.setOnMouseClicked(e -> {
-            ball.mini_move_up();
-            for(GameObject obj : game.getGameObjects()) {
-                if(obj instanceof ObstacleCombination) {
-                    ObstacleCombination obstacle = (ObstacleCombination) obj;
-                    obstacle.motion();
-                }
-                else if(obj instanceof ColorSwitch) {
-                    ColorSwitch c = (ColorSwitch) obj;
-//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
-                    c.motion();
-                }
-            }
-        });
 
         return scene;
     }

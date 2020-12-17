@@ -86,12 +86,15 @@ public class MainLobby extends Application implements Initializable, Serializabl
         rotateHelper(cyan3,70,70,4500);
         rotateHelper(yellow3,70,-70,4500);
         rotateHelper(purple3,-70,-70,4500);
-
+        /*
         if(musicPlayer == null){
-            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
+//            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
+            Media music = new Media("file:///Users/prachigoyal/IdeaProjects/Color-Switch-Game/SynCole-Time.mp3");
             musicPlayer = new MediaPlayer(music);
             musicPlayer.play();
         }
+
+         */
     }
 
     @Override
