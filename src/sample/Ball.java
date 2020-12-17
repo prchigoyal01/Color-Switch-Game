@@ -33,7 +33,6 @@ public final class Ball extends GameObject {
     private int YBase;
     private transient Color color;
     private transient Group root;
-    private transient Scene scene;
     protected transient TranslateTransition moveDown;
     protected transient TranslateTransition moveUp;
     private transient static Random rand = new Random();
@@ -73,7 +72,6 @@ public final class Ball extends GameObject {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         collides();
     }
 

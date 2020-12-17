@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +19,6 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -169,17 +170,17 @@ public class SelectPlayer implements Initializable {
             @Override
             public void handle(long l) {
                 ball.motion();
-                for(GameObject obj : game.getGameObjects()) {
-                    if(obj instanceof ObstacleCombination) {
+                for (GameObject obj : game.getGameObjects()) {
+                    if (obj instanceof ObstacleCombination) {
                         ObstacleCombination obstacle = (ObstacleCombination) obj;
                         obstacle.destroy();
                     }
-                    else if(obj instanceof ColorSwitch) {
+                    else if (obj instanceof ColorSwitch) {
                         ColorSwitch c = (ColorSwitch) obj;
-//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
                         c.destroy();
                     }
                 }
+
 
                 //MouseEvent
                 scene.setOnMouseClicked(e -> {
@@ -408,6 +409,7 @@ public class SelectPlayer implements Initializable {
     public static void setCurrentGameplay(Gameplay currentGameplay) {
         SelectPlayer.currentGameplay = currentGameplay;
     }
+
 }
 
 class UserProfile implements Serializable {

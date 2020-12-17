@@ -31,7 +31,5 @@ public final class Star extends GameObject {
 
     @Override
     public void motion() {}
-
-    public void disappear() {}
 }
 

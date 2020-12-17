@@ -37,6 +37,16 @@ public final class Gameplay implements Serializable {
         gameObjects.add(new SquareLineStar(root));
         gameObjects.add(new ColorSwitch(root, 250, -80));
     }
+
+    public void updatePositions() {
+        for(GameObject obj : gameObjects) {
+            if(obj instanceof ObstacleCombination) {
+                ObstacleCombination obstacle = (ObstacleCombination) obj;
+                obstacle.X = (int) obstacle.star.getShape().getTranslateX();
+                obstacle.Y = (int) obstacle.star.getShape().getTranslateY();
+            }
+        }
+    }
     public static void saveGame() {}
     public static void loadGame() {}
     public static void endGame() {}

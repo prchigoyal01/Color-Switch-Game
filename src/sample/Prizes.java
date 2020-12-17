@@ -202,8 +202,9 @@ public class Prizes {
         rt.setNode(spinPink1Points);
         rt.setCycleCount(1);
         rt.setByAngle(angle);
-        rt.setAutoReverse(false);
-//        par.getChildren().add(rt);
+//        rt.setAutoReverse(false);
+        //rt.play();
+        par.getChildren().add(rt);
 
         // spinPink2Points
         x = 62.5f;
@@ -219,8 +220,9 @@ public class Prizes {
         rt.setNode(spinPink2Points);
         rt.setCycleCount(1);
         rt.setByAngle(angle);
-        rt.setAutoReverse(false);
-//        par.getChildren().add(rt);
+//        rt.setAutoReverse(false);
+        //rt.play();
+        par.getChildren().add(rt);
 
         // spinPurple1Points
         x = 0f;
@@ -236,8 +238,9 @@ public class Prizes {
         rt.setNode(spinPurple1Points);
         rt.setCycleCount(1);
         rt.setByAngle(angle);
-        rt.setAutoReverse(false);
+//        rt.setAutoReverse(false);
         par.getChildren().add(rt);
+        //rt.play();
 
         // spinPurple2Points
         x = 0f;
@@ -248,12 +251,13 @@ public class Prizes {
 
         rt = new RotateTransition();
 
-        rt.setInterpolator(Interpolator.LINEAR);
+        //rt.setInterpolator(Interpolator.LINEAR);
         rt.setDuration(Duration.millis(duration));
         rt.setNode(spinPurple2Points);
         rt.setCycleCount(1);
         rt.setByAngle(angle);
-        rt.setAutoReverse(false);
+//        rt.setAutoReverse(false);
+        //rt.play();
         par.getChildren().add(rt);
 
         seq.getChildren().add(par);
