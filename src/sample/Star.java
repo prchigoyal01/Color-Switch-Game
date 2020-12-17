@@ -5,9 +5,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import java.io.Serializable;
 
-public final class Star extends GameObject{
-    private Shape shape;
+public final class Star extends GameObject {
+    private transient Shape shape;
 
     Star(int X, int Y) {
         this.X = X;

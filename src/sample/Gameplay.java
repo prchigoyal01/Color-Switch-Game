@@ -15,8 +15,8 @@ public final class Gameplay implements Serializable {
     private ArrayList<GameObject> gameObjects;
     private final static long SerialVersionUID = 42L;
     public UserProfile user;
-    private Group root;
     private static Random rand = new Random();
+    private transient Group root;
 
     Gameplay(UserProfile user, Group root){
         this.user = user;
@@ -29,6 +29,7 @@ public final class Gameplay implements Serializable {
     public Ball getBall() { return ball; }
     public ArrayList<GameObject> getGameObjects() { return gameObjects; }
     public Group getRoot() { return root; }
+    public Scene getScene() { return scene; }
 
     public void createGame() {
         gameObjects.add(new RightCrossStar(root));

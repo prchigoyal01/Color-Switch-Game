@@ -31,20 +31,24 @@ public final class Ball extends GameObject {
     private int score;
     private int YMin;
     private int YBase;
-    private Color color;
-    private Group root;
-    protected TranslateTransition moveDown;
-    protected TranslateTransition moveUp;
-    private static Random rand = new Random();
-    private static Color[] colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
+    private transient Color color;
+    private transient Group root;
+    private transient Scene scene;
+    protected transient TranslateTransition moveDown;
+    protected transient TranslateTransition moveUp;
+    private transient static Random rand = new Random();
+    private transient Color[] colors;
 
-    Ball(Group root) {
+    Ball(Group root, Scene scene) {
         this.X = 250;
         this.YBase = 0;
-        this.Y = 600;
-        this.YMin = 100;
+        this.Y = 500;
+        this.YMin = 500;
+        this.color = Color.CYAN;
         this.root = root;
-        this.score = 0;
+        this.scene = scene;
+        this.rand = new Random();
+        this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
 
         draw();
         moveDown = new TranslateTransition(Duration.millis(1600), this.shape);
@@ -55,11 +59,9 @@ public final class Ball extends GameObject {
     public Shape getShape() { return shape; }
     public int getYMin() { return YMin; }
     public int getYBase() { return YBase; }
-
-
     @Override
     public void draw() {
-        this.color = Color.CYAN;
+        this.color = colors[rand.nextInt(4)];
         Circle c = new Circle(this.X, this.Y, 10, this.color);
         this.shape = c;
     }
