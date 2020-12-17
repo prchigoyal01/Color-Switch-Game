@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.animation.Animation;
-import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point3D;
@@ -23,22 +22,14 @@ public abstract class ObstacleObject extends GameObject{
     protected int speed;
     protected int direction;
     protected int orientation;
-    protected ArrayList<Shape> components;
+    protected transient ArrayList<Shape> components;
     private static Random rand = new Random();
     private static Color[] colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
-    private ParallelTransition pt;
-    protected ArrayList<Animation> transitions;
 
     ObstacleObject() {
         components = new ArrayList<Shape>();
-        pt = new ParallelTransition();
-        transitions = new ArrayList<>();
     }
 
-    public ArrayList<Animation> getTransitions() { return transitions; }
-
-    public ParallelTransition getPt() { return pt; }
-    public void setPt(ParallelTransition pt) { this.pt = pt; }
 
     protected void movePivot(Node node, double x, double y){
         node.getTransforms().add(new Translate(-x, -y));

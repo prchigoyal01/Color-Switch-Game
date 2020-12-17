@@ -11,9 +11,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 public final class ColorSwitch extends GameObject{
-    ArrayList<Shape> components;
+    private transient ArrayList<Shape> components;
     private int YMove;
-    private Group root;
+    private transient Group root;
 
     ColorSwitch(Group root, int X, int Y) {
         components = new ArrayList<Shape>();
@@ -26,6 +26,9 @@ public final class ColorSwitch extends GameObject{
 
     public int getYMove() { return YMove; }
     public void setYMove(int YMove) { this.YMove = YMove; }
+    public ArrayList<Shape> getComponents() {
+        return components;
+    }
 
     @Override
     public void draw(){

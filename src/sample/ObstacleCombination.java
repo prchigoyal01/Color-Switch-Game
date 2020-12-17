@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public abstract class ObstacleCombination extends GameObject{
     protected Star star;
     protected int YMove;
-    protected ArrayList<Shape> components;
-    protected Group root;
+    protected transient ArrayList<Shape> components;
+    protected transient Group root;
     ObstacleCombination(Group root) {
         this.YMove = 50;
         this.root = root;

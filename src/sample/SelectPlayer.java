@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -31,14 +32,24 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class SelectPlayer implements Initializable {
-    @FXML Button goBack;
+    @FXML
+    Button goBack;
     // RadioButton is not serializable, so cannot use it in HashMaps and then serialize the mapping
-    @FXML RadioButton userRadioButton1; @FXML   RadioButton userRadioButton2;   @FXML      RadioButton userRadioButton3;
-    @FXML RadioButton userRadioButton4;   @FXML   RadioButton userRadioButton5;
-    @FXML ToggleGroup chooseGameGroup;
+    @FXML
+    RadioButton userRadioButton1;
+    @FXML
+    RadioButton userRadioButton2;
+    @FXML
+    RadioButton userRadioButton3;
+    @FXML
+    RadioButton userRadioButton4;
+    @FXML
+    RadioButton userRadioButton5;
+    @FXML
+    ToggleGroup chooseGameGroup;
 
     // map integers to buttons and store which integer maps to which gameplay.
-    public static HashMap<Integer,Gameplay> numberToGamePlayMapping;// this mapping is saved in 'saveData.txt'
+    public static HashMap<Integer, Gameplay> numberToGamePlayMapping;// this mapping is saved in 'saveData.txt'
     public static HashMap<Integer, RadioButton> numberToButtonMapping;// this mapping is created everytime we change scene to 'SelectPlayer.fxml'
     private static boolean loadFromFile = true;
 
@@ -48,53 +59,53 @@ public class SelectPlayer implements Initializable {
     public static boolean pauseBoolean;
     public static boolean saveExitBoolean;
     public static boolean firstTime = true;
+    public static boolean pauseBooleanBanana;
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
 
         numberToButtonMapping = new HashMap<>();
-        numberToButtonMapping.put(1,userRadioButton1);
-        numberToButtonMapping.put(2,userRadioButton2);
-        numberToButtonMapping.put(3,userRadioButton3);
-        numberToButtonMapping.put(4,userRadioButton4);
-        numberToButtonMapping.put(5,userRadioButton5);
+        numberToButtonMapping.put(1, userRadioButton1);
+        numberToButtonMapping.put(2, userRadioButton2);
+        numberToButtonMapping.put(3, userRadioButton3);
+        numberToButtonMapping.put(4, userRadioButton4);
+        numberToButtonMapping.put(5, userRadioButton5);
 
         gameplays = new ArrayList<>();
 
         // set Loaded Games names
-        System.out.println("loadfromFile: "+loadFromFile);
-        if(loadFromFile){
-            try{
+//        System.out.println("loadfromFile: " + loadFromFile);
+        if (loadFromFile) {
+            try {
                 MainLobby.deserialize();
-            } catch (IOException e){
+            } catch (IOException e) {
 
-            } catch (ClassNotFoundException e){
+            } catch (ClassNotFoundException e) {
 
-            } finally{
+            } finally {
                 loadFromFile = false;
             }
 //            System.out.println(gameplays.toString());
         }
 
-        if(numberToGamePlayMapping != null){
-            System.out.println("numberToGamePlayMapping: NOT NULL");
-            System.out.println(numberToGamePlayMapping.toString());
-            for(Map.Entry<Integer,Gameplay> entry: numberToGamePlayMapping.entrySet()){
+        if (numberToGamePlayMapping != null) {
+//            System.out.println("numberToGamePlayMapping: NOT NULL");
+//            System.out.println(numberToGamePlayMapping.toString());
+            for (Map.Entry<Integer, Gameplay> entry : numberToGamePlayMapping.entrySet()) {
                 String username = entry.getValue().getUser().getUsername();
                 numberToButtonMapping.get(entry.getKey()).setText(username);
             }
-        }
-        else{
-            System.out.println("numberToGamePlayMapping: null");
+        } else {
+//            System.out.println("numberToGamePlayMapping: null");
         }
     }
 
-    Button pauseButtonFunction(){
+    Button pauseButtonFunction() {
         Button button = new Button("||");
         button.setTranslateX(10);
         button.setTranslateY(10);
-        button.setFont(new Font("Broadway",10));
+        button.setFont(new Font("Broadway", 10));
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -159,27 +170,40 @@ public class SelectPlayer implements Initializable {
 
     // Start playing game from here, will be called after loading the game and setting the
     // required attributes (like objects,stars, position of ball, angle of rotation of obstacles already present).
-    public Scene startGame(){
+    public Scene startGame() {
         //CREATE ROOT NODE
-        Gameplay game = currentGameplay;
-        Group root = game.getRoot();
+
+        Gameplay game;
+        Group root = currentGameplay.getRoot();
+        Scene scene;
+        if (root == null) {
+            root = new Group();
+            scene = new Scene(root, 500, 700, Color.GREY);
+            currentGameplay = new Gameplay(currentUser, root, scene);
+            game = currentGameplay;
+        } else {
+            game = currentGameplay;
+            scene = game.getScene();
+        }
         Ball ball = game.getBall();
-        Scene scene = game.getScene();
+
         pauseBoolean = false;
         saveExitBoolean = false;
+        pauseBooleanBanana = false;
 
-        System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
+//        System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
         Button pauseButton = pauseButtonFunction();
         Label label = new Label();
         label.setTranslateX(10);
         label.setTranslateY(650);
-        label.setFont(new Font("Broadway",50));
+        label.setFont(new Font("Broadway", 50));
 
         TranslateTransition moveUp = new TranslateTransition(Duration.millis(160));
         TranslateTransition moveDown = new TranslateTransition(Duration.millis(160));
 
-        if(firstTime) {
+        if (firstTime) {
+//            System.out.println("HERE: " + root + " " + ball);
             root.getChildren().add(ball.getShape());
             root.getChildren().add(pauseButton);
             root.getChildren().add(label);
@@ -189,7 +213,7 @@ public class SelectPlayer implements Initializable {
                     root.getChildren().addAll(obstacle.components);
                 } else if (obj instanceof ColorSwitch) {
                     ColorSwitch c = (ColorSwitch) obj;
-                    root.getChildren().addAll(c.components);
+                    root.getChildren().addAll(c.getComponents());
                 }
             }
             firstTime = false;
@@ -200,14 +224,28 @@ public class SelectPlayer implements Initializable {
             public void handle(long l) {
                 label.setText("Score: " + ball.getScore());
                 ball.motion();
+                if (ball.getShouldIEndGame()) {
+                    endTheGame(ball);
+                }
                 for (GameObject obj : game.getGameObjects()) {
                     if (obj instanceof ObstacleCombination) {
                         ObstacleCombination obstacle = (ObstacleCombination) obj;
                         obstacle.destroy();
-                    }
-                    else if (obj instanceof ColorSwitch) {
+                    } else if (obj instanceof ColorSwitch) {
                         ColorSwitch c = (ColorSwitch) obj;
                         c.destroy();
+                    }
+                }
+                if(pauseBooleanBanana){
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml"));
+                        Scene selectPlayerScene = new Scene(root);
+                        Stage window = (Stage) scene.getWindow();
+                        window.setScene(selectPlayerScene);
+                        stop();
+                    } catch (IOException e) {
+                        System.out.println("ERROR: Closing the program due to IOException");
+                        System.exit(1);
                     }
                 }
 
@@ -215,26 +253,25 @@ public class SelectPlayer implements Initializable {
                 //MouseEvent
                 scene.setOnMouseClicked(e -> {
                     ball.mini_move_up();
-                    for(GameObject obj : game.getGameObjects()) {
-                        if(obj instanceof ObstacleCombination) {
+                    for (GameObject obj : game.getGameObjects()) {
+                        if (obj instanceof ObstacleCombination) {
                             ObstacleCombination obstacle = (ObstacleCombination) obj;
                             obstacle.motion();
-                        }
-                        else if(obj instanceof ColorSwitch) {
+                        } else if (obj instanceof ColorSwitch) {
                             ColorSwitch c = (ColorSwitch) obj;
                             c.motion();
                         }
                     }
                 });
 
-                if(saveExitBoolean){
-                    try{
-                        Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml" ));
+                if (saveExitBoolean) {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml"));
                         Scene selectPlayerScene = new Scene(root);
-                        Stage window = (Stage)scene.getWindow();
+                        Stage window = (Stage) scene.getWindow();
                         window.setScene(selectPlayerScene);
                         stop();
-                    }catch(IOException e){
+                    } catch (IOException e) {
                         System.out.println("ERROR: Closing the program due to IOException");
                         System.exit(1);
                     }
@@ -243,6 +280,45 @@ public class SelectPlayer implements Initializable {
         }.start();
 
         return scene;
+    }
+
+    void endTheGame(Ball ball) {
+        ball.setShouldIEndGame(false);
+        Stage window = new Stage();
+        window.setWidth(400);
+        window.setHeight(350);
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("You DIED....");
+
+        Label welcomeText = new Label();
+        welcomeText.setFont(new Font("Broadway", 25));
+        welcomeText.setAlignment(Pos.CENTER);
+        welcomeText.setText("OOPS, YOU DIED...");
+        welcomeText.setTranslateX(120);
+        welcomeText.setTranslateY(10);
+
+        Button saveExitButton = new Button("I'll go away...");
+        saveExitButton.setTranslateX(150);
+        saveExitButton.setTranslateY(200);
+        saveExitButton.setFont(new Font("Broadway", 10));
+        saveExitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Exit the Scene
+                pauseBooleanBanana = true;
+                window.close();
+            }
+        });
+
+        Group root = new Group();
+        root.getChildren().add(welcomeText);
+        root.getChildren().add(saveExitButton);
+
+        Scene scene = new Scene(root, 300, 300, Color.DARKGRAY);
+        window.initStyle(StageStyle.UNDECORATED);
+        window.setScene(scene);
+        window.show();
+        // after exiting the new Stage
     }
 
     public void loadGameButtonPushed(ActionEvent event) throws IOException {
@@ -354,19 +430,19 @@ public class SelectPlayer implements Initializable {
 
         UserProfile newUser = currentUser;
 
-        System.out.println("BEFORE NEW GAME BUTTON PUSHED");
-        System.out.println(numberToGamePlayMapping.toString());
+//        System.out.println("BEFORE NEW GAME BUTTON PUSHED");
+//        System.out.println(numberToGamePlayMapping.toString());
         Group root = new Group();
         Gameplay gameplay = new Gameplay(newUser, root, new Scene(root, 500, 700, Color.GREY));
         // Register the new account to the database
-        System.out.println("gameplays: "+gameplays);
-        System.out.println("gameplays.size(): "+gameplays.size());
+//        System.out.println("gameplays: "+gameplays);
+//        System.out.println("gameplays.size(): "+gameplays.size());
         gameplays.add(gameplay);
         numberToGamePlayMapping.put(radioButtonNumber,gameplay);
         numberToButtonMapping.get(radioButtonNumber).setText(currentUser.getUsername());
         currentGameplay = gameplay;
-        System.out.println("AFTER NEW GAME BUTTON PUSHED");
-        System.out.println(numberToGamePlayMapping.toString());
+//        System.out.println("AFTER NEW GAME BUTTON PUSHED");
+//        System.out.println(numberToGamePlayMapping.toString());
     }
 
     void newGameHelper(String name, String username, String password){

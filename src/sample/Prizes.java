@@ -77,15 +77,33 @@ public class Prizes {
                         });
 
                         Label messageLabel = new Label();
-                        messageLabel.setFont(Font.font("Broadway"));
+                        messageLabel.setFont(Font.font("Broadway",20));
                         messageLabel.setAlignment(Pos.CENTER);
-                        messageLabel.setText("Hold up! Our treasure hunters are out there finding the best thing for you! Return back in "+ (6 - currentDateTime.getHour()+oldDateTime.getHour())+" hours.");
-                        messageLabel.setTranslateX(100);
-                        messageLabel.setTranslateX(100);
+                        messageLabel.setText("Hold up!");
+                        messageLabel.setTranslateX(80);
+                        messageLabel.setTranslateY(100);
+
+
+                        Label messageLabel1 = new Label();
+                        messageLabel1.setFont(Font.font("Broadway"));
+                        messageLabel1.setAlignment(Pos.CENTER);
+                        messageLabel1.setText("Our treasure hunters are out there finding the ");
+                        messageLabel1.setTranslateX(10);
+                        messageLabel1.setTranslateY(200);
+
+
+                        Label messageLabel2 = new Label();
+                        messageLabel2.setFont(Font.font("Broadway"));
+                        messageLabel2.setAlignment(Pos.CENTER);
+                        messageLabel2.setText("best thing for you! Return back in "+ (6 - currentDateTime.getHour()+oldDateTime.getHour())+" hours.");
+                        messageLabel2.setTranslateX(10);
+                        messageLabel2.setTranslateY(250);
 
                         Group root = new Group();
                         root.getChildren().add(closeButton);
                         root.getChildren().add(messageLabel);
+                        root.getChildren().add(messageLabel1);
+                        root.getChildren().add(messageLabel2);
 
                         Scene scene = new Scene(root,450,300, Color.GREY);
                         window.setScene(scene);

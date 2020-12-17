@@ -87,11 +87,11 @@ public class MainLobby extends Application implements Initializable, Serializabl
         rotateHelper(yellow3,70,-70,4500);
         rotateHelper(purple3,-70,-70,4500);
 
-//        if(musicPlayer == null){
-//            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
-//            musicPlayer = new MediaPlayer(music);
-//            musicPlayer.play();
-//        }
+        if(musicPlayer == null){
+            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
+            musicPlayer = new MediaPlayer(music);
+            musicPlayer.play();
+        }
 
     }
 
@@ -106,7 +106,7 @@ public class MainLobby extends Application implements Initializable, Serializabl
     // Runs the code before closing the Stage
     @Override
     public void stop() throws IOException{
-        System.out.println("Stage is closing");
+//        System.out.println("Stage is closing");
         // Save file
         serialize();
     }
@@ -120,11 +120,11 @@ public class MainLobby extends Application implements Initializable, Serializabl
 
             if(SelectPlayer.numberToGamePlayMapping != null){
                 for(Map.Entry<Integer,Gameplay> entry: SelectPlayer.numberToGamePlayMapping.entrySet()){
-                    System.out.println("AAAA "+entry.getKey()+" " + entry.getValue());
+//                    System.out.println("AAAA "+entry.getKey()+" " + entry.getValue());
                 }
             }
             else{
-                System.out.println("SelectPlayer.buttonToGameplayMapping: null");
+//                System.out.println("SelectPlayer.buttonToGameplayMapping: null");
             }
             out.writeObject(SelectPlayer.numberToGamePlayMapping);
         }
@@ -141,7 +141,7 @@ public class MainLobby extends Application implements Initializable, Serializabl
         ArrayList<Gameplay> savedGameplays = new ArrayList<>();
         try{
             in = new ObjectInputStream(new FileInputStream("savedData.txt"));
-            System.out.println("in: "+in);
+//            System.out.println("in: "+in);
             savedGameplays = (ArrayList<Gameplay>) in.readObject();
             if(savedGameplays == null){
                 savedGameplays = new ArrayList<>();
@@ -160,11 +160,11 @@ public class MainLobby extends Application implements Initializable, Serializabl
             SelectPlayer.gameplays = savedGameplays;
             SelectPlayer.numberToGamePlayMapping = savedMappings;
 
-            if(SelectPlayer.numberToGamePlayMapping != null){
-                for(Map.Entry<Integer,Gameplay> entry: SelectPlayer.numberToGamePlayMapping.entrySet()){
-                    System.out.println("BBBB "+entry.getKey()+" " + entry.getValue());
-                }
-            }
+//            if(SelectPlayer.numberToGamePlayMapping != null){
+//                for(Map.Entry<Integer,Gameplay> entry: SelectPlayer.numberToGamePlayMapping.entrySet()){
+//                    System.out.println("BBBB "+entry.getKey()+" " + entry.getValue());
+//                }
+//            }
         }
     }
 

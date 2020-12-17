@@ -24,10 +24,9 @@ import java.util.Random;
 import javafx.scene.Group;
 import javafx.util.Duration;
 
-import javax.net.ssl.SNIHostName;
 
 public final class Ball extends GameObject {
-    private Shape shape;
+    private transient Shape shape;
     private int score;
     private int YMin;
     private int YBase;
@@ -37,8 +36,9 @@ public final class Ball extends GameObject {
     protected transient TranslateTransition moveUp;
     private transient static Random rand = new Random();
     private transient Color[] colors;
-    private ArrayList<Bounds> scored;
-    private ArrayList<Bounds> obstructed;
+    private transient ArrayList<Bounds> scored;
+    private transient ArrayList<Bounds> obstructed;
+    private boolean shouldIEndGame;
 
     Ball(Group root) {
         this.X = 250;
@@ -50,6 +50,7 @@ public final class Ball extends GameObject {
         this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
         this.scored = new ArrayList<>();
         this.obstructed = new ArrayList<>();
+        shouldIEndGame = false;
 
         draw();
         moveDown = new TranslateTransition(Duration.millis(1600), this.shape);
@@ -60,6 +61,12 @@ public final class Ball extends GameObject {
     public int getYMin() { return YMin; }
     public int getYBase() { return YBase; }
     public int getScore() { return score; }
+    public boolean getShouldIEndGame(){
+        return shouldIEndGame;
+    }
+    public void setShouldIEndGame(boolean tmp){
+        shouldIEndGame = tmp;
+    }
 
     @Override
     public void draw() {
@@ -96,7 +103,7 @@ public final class Ball extends GameObject {
                         collided = b.intersects(x.getBoundsInParent()) || collided;
                     }
                     if(!collided) {
-                        System.out.println("Collides with obstacle ->" + x.getBoundsInParent());
+//                        System.out.println("Collides with obstacle ->" + x.getBoundsInParent());
                         destroyBall = true;
                         obstructed.add(x.getBoundsInParent());
                     }
@@ -108,12 +115,12 @@ public final class Ball extends GameObject {
                     }
                     if(!collided) {
                         updateScore();
-                        System.out.println("Collides with star");
+//                        System.out.println("Collides with star");
                         scored.add(x.getBoundsInParent());
                     }
                 }
                 if(intersectsColorSwitch((Shape) x)) {
-                    System.out.println("Collides with color switch");
+//                    System.out.println("Collides with color switch");
                     changeColor();
                 }
             }
@@ -158,6 +165,8 @@ public final class Ball extends GameObject {
     private void destroy(){
         root.getChildren().remove(shape);
         SelectPlayer.currentUser.setLevelsPlayed(SelectPlayer.currentUser.getLevelsPlayed() + 1);
+        // End the game
+        shouldIEndGame = true;
     }
     private void updateScore(){
         score++;
