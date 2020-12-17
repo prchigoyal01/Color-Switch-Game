@@ -34,7 +34,7 @@ public final class Gameplay implements Serializable {
         gameObjects.add(new RightCrossStar(root));
         gameObjects.add(new LeftCrossStar(root));
         gameObjects.add(new DiamondLineStar(root));
-        //gameObjects.add(new SquareLineStar(root));
+        gameObjects.add(new SquareLineStar(root));
         gameObjects.add(new ColorSwitch(root, 250, -80));
     }
     public static void saveGame() {}

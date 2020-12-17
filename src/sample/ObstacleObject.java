@@ -3,6 +3,7 @@ package sample;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -92,11 +93,10 @@ final class LeftCross extends ObstacleObject {
     public void motion() {
         for(Shape x : components) {
             RotateTransition rt = new RotateTransition();
-            rt.setDuration(Duration.millis(5000));
+            rt.setDuration(Duration.millis(10000));
             rt.setNode(x);
             rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
-            rt.setAutoReverse(true);
             rt.play();
         }
     }
@@ -145,49 +145,48 @@ final class RightCross extends ObstacleObject {
     public void motion() {
         for(Shape x : components) {
             RotateTransition rt = new RotateTransition();
-            rt.setDuration(Duration.millis(5000));
+            rt.setDuration(Duration.millis(10000));
             rt.setNode(x);
             rt.setCycleCount(Animation.INDEFINITE);
             rt.setByAngle(360);
-            rt.setAutoReverse(false);
             rt.play();
         }
     }
 }
 
 final class SquareLine extends ObstacleObject {
-    SquareLine() {
+    SquareLine(int X, int Y) {
+        this.X = X;
+        this.Y = Y;
         draw();
-        this.X = 250;
-        this.Y = 220;
         motion();
     }
 
     @Override
     public void draw() {
-        Line l1 = new Line(175,145, 325, 145);
+        Line l1 = new Line(X + 100,Y - 100, X + 100, Y + 100);
         l1.setStrokeWidth(20);
         l1.setStrokeLineCap(StrokeLineCap.ROUND);
         l1.setStroke(Color.CYAN);
-        movePivot(l1, 0, 75);
+        movePivot(l1, -100, 0);
 
-        Line l2 = new Line(175,295, 325, 295);
+        Line l2 = new Line(X + 100,Y + 100, X - 100, Y + 100);
         l2.setStrokeWidth(20);
         l2.setStrokeLineCap(StrokeLineCap.ROUND);
         l2.setStroke(Color.DEEPPINK);
-        movePivot(l2, 0, -75);
+        movePivot(l2, 0, -100);
 
-        Line l3 = new Line(175,145, 175, 295);
+        Line l3 = new Line(X - 100,Y + 100, X - 100, Y - 100);
         l3.setStrokeWidth(20);
         l3.setStrokeLineCap(StrokeLineCap.ROUND);
         l3.setStroke(Color.YELLOW);
-        movePivot(l3, 75, 0);
+        movePivot(l3, 100, 0);
 
-        Line l4 = new Line(325,145, 325, 295);
+        Line l4 = new Line(X - 100,Y - 100, X + 100, Y - 100);
         l4.setStrokeWidth(20);
         l4.setStrokeLineCap(StrokeLineCap.ROUND);
         l4.setStroke(Color.PURPLE);
-        movePivot(l4, -75, 0);
+        movePivot(l4, 0, 100);
 
         components.add(l1);
         components.add(l4);
@@ -199,11 +198,10 @@ final class SquareLine extends ObstacleObject {
     public void motion() {
         for(Shape x : components) {
             RotateTransition rt = new RotateTransition();
-            rt.setDuration(Duration.millis(5000));
+            rt.setDuration(Duration.millis(10000));
             rt.setNode(x);
             rt.setByAngle(360);
             rt.setCycleCount(Animation.INDEFINITE);
-            rt.setAutoReverse(false);
             rt.play();
         }
     }
@@ -219,46 +217,66 @@ final class DiamondLine extends ObstacleObject {
 
     @Override
     public void draw() {
-        Line l1 = new Line(X,Y - 75, X + 75, Y);
+        Line l1 = new Line(0, Y, 125, Y);
         l1.setStrokeWidth(20);
         l1.setStrokeLineCap(StrokeLineCap.ROUND);
         l1.setStroke(Color.CYAN);
-        movePivot(l1, -40, 40);
 
-        Line l2 = new Line(X + 75, Y, X, Y + 75);
+        Line l2 = new Line(125, Y, 250, Y);
         l2.setStrokeWidth(20);
         l2.setStrokeLineCap(StrokeLineCap.ROUND);
         l2.setStroke(Color.DEEPPINK);
-        movePivot(l2, -40, -40);
 
-        Line l3 = new Line(X,Y + 75, X - 75, Y);
+        Line l3 = new Line(250, Y, 375, Y);
         l3.setStrokeWidth(20);
         l3.setStrokeLineCap(StrokeLineCap.ROUND);
         l3.setStroke(Color.YELLOW);
-        movePivot(l3, 40, -40);
 
-        Line l4 = new Line(X - 75,Y, X, Y - 75);
+        Line l4 = new Line(375, Y, 500, Y);
         l4.setStrokeWidth(20);
         l4.setStrokeLineCap(StrokeLineCap.ROUND);
         l4.setStroke(Color.PURPLE);
-        movePivot(l4, 40, 40);
+
+        Line l5 = new Line(-125, Y, 0, Y);
+        l5.setStrokeWidth(20);
+        l5.setStrokeLineCap(StrokeLineCap.ROUND);
+        l5.setStroke(Color.PURPLE);
+
+        Line l6 = new Line(-250, Y, -125, Y);
+        l6.setStrokeWidth(20);
+        l6.setStrokeLineCap(StrokeLineCap.ROUND);
+        l6.setStroke(Color.YELLOW);
+
+        Line l7 = new Line(-375, Y, -250, Y);
+        l7.setStrokeWidth(20);
+        l7.setStrokeLineCap(StrokeLineCap.ROUND);
+        l7.setStroke(Color.DEEPPINK);
+
+        Line l8 = new Line(-500, Y, -375, Y);
+        l8.setStrokeWidth(20);
+        l8.setStrokeLineCap(StrokeLineCap.ROUND);
+        l8.setStroke(Color.CYAN);
 
         components.add(l1);
         components.add(l4);
         components.add(l2);
         components.add(l3);
+        components.add(l6);
+        components.add(l5);
+        components.add(l7);
+        components.add(l8);
     }
 
     @Override
     public void motion() {
         for(Shape x : components) {
-            RotateTransition rt = new RotateTransition();
-            rt.setDuration(Duration.millis(5000));
-            rt.setNode(x);
-            rt.setCycleCount(Animation.INDEFINITE);
-            rt.setByAngle(360);
-            rt.setAutoReverse(false);
-            rt.play();
+            TranslateTransition tt = new TranslateTransition();
+            tt.setDuration(Duration.millis(10000));
+            tt.setNode(x);
+            tt.setCycleCount(Animation.INDEFINITE);
+            tt.setByX(500);
+            tt.setCycleCount(Animation.INDEFINITE);
+            tt.play();
         }
     }
 }

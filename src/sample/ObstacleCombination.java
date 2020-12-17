@@ -42,12 +42,12 @@ final class SquareLineStar extends ObstacleCombination {
     SquareLineStar(Group root) {
         super(root);
         this.X = 250;
-        this.Y = 220;
+        this.Y = -1000;
         draw();
     }
     @Override
     public void draw() {
-        square = new SquareLine();
+        square = new SquareLine(X, Y);
         star = new Star(X, Y);
         components.addAll(square.components);
         components.add(star.getShape());
@@ -70,13 +70,13 @@ final class DiamondLineStar extends ObstacleCombination {
     DiamondLineStar(Group root) {
         super(root);
         this.X = 250;
-        this.Y = -600;
+        this.Y = 220;
         draw();
     }
     @Override
     public void draw() {
         diamond = new DiamondLine(X, Y);
-        star = new Star(X, Y);
+        star = new Star(X, Y - 50);
         components.addAll(diamond.components);
         components.add(star.getShape());
     }
@@ -126,7 +126,7 @@ final class RightCrossStar extends ObstacleCombination {
     RightCrossStar(Group root) {
         super(root);
         this.X = 350;
-        this.Y = -1000;
+        this.Y = -600;
         draw();
     }
     @Override
