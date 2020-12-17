@@ -46,6 +46,7 @@ public class SelectPlayer implements Initializable {
     public static Gameplay currentGameplay;
     public static ArrayList<Gameplay> gameplays;
     public static boolean pauseBoolean;
+    public static boolean saveExitBoolean;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -107,11 +108,11 @@ public class SelectPlayer implements Initializable {
                     welcomeText.setFont(new Font("Broadway", 30));
                     welcomeText.setAlignment(Pos.CENTER);
                     welcomeText.setText("Pause Menu");
-                    welcomeText.setTranslateX(110);
+                    welcomeText.setTranslateX(120);
                     welcomeText.setTranslateY(10);
 
                     Button closeButton = new Button("Close Menu");
-                    closeButton.setTranslateX(145);
+                    closeButton.setTranslateX(150);
                     closeButton.setTranslateY(300);
                     closeButton.setFont(new Font("Broadway", 10));
                     closeButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -122,9 +123,25 @@ public class SelectPlayer implements Initializable {
                         }
                     });
 
+                    Button saveExitButton = new Button("Save and Exit");
+                    saveExitButton.setTranslateX(150);
+                    saveExitButton.setTranslateY(200);
+                    saveExitButton.setFont(new Font("Broadway", 10));
+                    saveExitButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            // Save the game
+
+                            // Exit the Scene
+                            saveExitBoolean = true;
+                            window.close();
+                        }
+                    });
+
                     Group root = new Group();
                     root.getChildren().add(welcomeText);
                     root.getChildren().add(closeButton);
+                    root.getChildren().add(saveExitButton);
 
                     Scene scene = new Scene(root, 300, 300, Color.DARKGRAY);
                     window.initStyle(StageStyle.UNDECORATED);
@@ -143,9 +160,11 @@ public class SelectPlayer implements Initializable {
     public Scene startGame(){
         //CREATE ROOT NODE
         Gameplay game = currentGameplay;
-        Group root = game.getRoot();
+        Group root = new Group();
         Ball ball = game.getBall();
         pauseBoolean = false;
+        saveExitBoolean = false;
+
         System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
         Button pauseButton = pauseButtonFunction();
@@ -197,6 +216,18 @@ public class SelectPlayer implements Initializable {
                         }
                     }
                 });
+                if(saveExitBoolean == true){
+                    try{
+                        Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml" ));
+                        Scene selectPlayerScene = new Scene(root);
+                        Stage window = (Stage)scene.getWindow();
+                        window.setScene(selectPlayerScene);
+                        stop();
+                    }catch(IOException e){
+                        System.out.println("ERROR: Closing the program due to IOException");
+                        System.exit(1);
+                    }
+                }
             }
         }.start();
 

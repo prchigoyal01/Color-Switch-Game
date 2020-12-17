@@ -87,14 +87,11 @@ public class MainLobby extends Application implements Initializable, Serializabl
         rotateHelper(yellow3,70,-70,4500);
         rotateHelper(purple3,-70,-70,4500);
 
-        /*
-        if(musicPlayer == null){
-            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
-            musicPlayer = new MediaPlayer(music);
-            musicPlayer.play();
-        }
-
-         */
+//        if(musicPlayer == null){
+//            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
+//            musicPlayer = new MediaPlayer(music);
+//            musicPlayer.play();
+//        }
 
     }
 
