@@ -29,7 +29,6 @@ public final class Gameplay implements Serializable {
     public Ball getBall() { return ball; }
     public ArrayList<GameObject> getGameObjects() { return gameObjects; }
     public Group getRoot() { return root; }
-    public Scene getScene() { return scene; }
 
     public void createGame() {
         gameObjects.add(new RightCrossStar(root));

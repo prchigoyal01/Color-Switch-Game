@@ -19,7 +19,7 @@
                </VBox.margin>
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <CheckBox alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="102.0" prefWidth="373.0" text="Play Music">
+                  <CheckBox fx:id="playMusicCheckbox" alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#playMusicCheckboxClicked" prefHeight="102.0" prefWidth="373.0" selected="true" text="Play Music">
                      <font>
                         <Font name="Broadway" size="29.0" />
                      </font>
@@ -30,7 +30,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <CheckBox alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="102.0" prefWidth="373.0" text="Play Sounds">
+                  <CheckBox fx:id="playSoundsCheckbox" alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#playSoundsCheckboxClicked" prefHeight="102.0" prefWidth="373.0" selected="true" text="Play Sounds">
                      <font>
                         <Font name="Broadway" size="29.0" />
                      </font>

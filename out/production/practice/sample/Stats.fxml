@@ -100,6 +100,21 @@
         </HBox>
     </bottom>
     <top>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="100.0" prefWidth="270.0" text="Welcome">
+               <font>
+                  <Font name="Broadway" size="29.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="usernameLabel" prefHeight="100.0" prefWidth="270.0" text="EMPTY" textFill="#941919">
+               <font>
+                  <Font name="Broadway" size="29.0" />
+               </font>
+            </Label>
+         </children></HBox>
     </top>
 </BorderPane>

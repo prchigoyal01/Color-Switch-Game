@@ -21,6 +21,7 @@ public class Stats implements Initializable {
     @FXML Label levelsPlayedLabel;
     @FXML Label starsSpentLabel;
     @FXML Label endlessScoreLabel;
+    @FXML Label usernameLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -28,6 +29,7 @@ public class Stats implements Initializable {
         levelsPlayedLabel.setText(Integer.toString(SelectPlayer.currentUser.getLevelsPlayed()));
         starsSpentLabel.setText(Integer.toString(SelectPlayer.currentUser.getStarsSpent()));
         endlessScoreLabel.setText(Integer.toString(SelectPlayer.currentUser.getEndlessScore()));
+        usernameLabel.setText(SelectPlayer.currentUser.getUsername());
     }
 
     public void goBackButtonPushed(ActionEvent event) throws IOException {

@@ -33,20 +33,18 @@ public final class Ball extends GameObject {
     private int YBase;
     private transient Color color;
     private transient Group root;
-    private transient Scene scene;
     protected transient TranslateTransition moveDown;
     protected transient TranslateTransition moveUp;
     private transient static Random rand = new Random();
     private transient Color[] colors;
 
-    Ball(Group root, Scene scene) {
+    Ball(Group root) {
         this.X = 250;
         this.YBase = 0;
         this.Y = 500;
         this.YMin = 500;
         this.color = Color.CYAN;
         this.root = root;
-        this.scene = scene;
         this.rand = new Random();
         this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
 

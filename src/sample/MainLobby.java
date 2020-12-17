@@ -13,12 +13,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
 
 import java.io.*;
 import java.net.URL;
@@ -38,9 +40,9 @@ public class MainLobby extends Application implements Initializable, Serializabl
     @FXML Arc pink2;    @FXML Arc cyan2;    @FXML Arc purple2;    @FXML Arc yellow2;
     @FXML Arc pink3;    @FXML Arc cyan3;    @FXML Arc purple3;    @FXML Arc yellow3;
 
+    static MediaPlayer musicPlayer = null;
 
-
-        //      The constructor is called first, then any @FXML annotated fields are populated, then initialize() is called.
+    //      The constructor is called first, then any @FXML annotated fields are populated, then initialize() is called.
         //      Therefore the constructor does not have access to @FXML fields referring to components defined in the .fxml file,
         //      while initialize() does have access to them.
 //    MainLobby(){
@@ -84,6 +86,12 @@ public class MainLobby extends Application implements Initializable, Serializabl
         rotateHelper(cyan3,70,70,4500);
         rotateHelper(yellow3,70,-70,4500);
         rotateHelper(purple3,-70,-70,4500);
+
+        if(musicPlayer == null){
+            Media music = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" +"SynCole-Time.mp3");
+            musicPlayer = new MediaPlayer(music);
+            musicPlayer.play();
+        }
     }
 
     @Override
