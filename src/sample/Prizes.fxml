@@ -43,30 +43,11 @@
                <children>
                   <Pane prefHeight="300.0" prefWidth="500.0">
                      <children>
-                        <Arc fx:id="spinPink1" fill="#ba07ba" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="315.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fx:id="spinPink1" fill="#c27203" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="315.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Arc fx:id="spinPurple1" fill="#72099e" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                         <Arc fx:id="spinPink2" fill="#ba07ba" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="135.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Arc fx:id="spinPurple2" fill="#72099e" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="225.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                        <Label fx:id="spinPurple1Points" layoutX="234.0" layoutY="65.0" text="10" textFill="WHITE">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="spinPurple2Points" layoutX="242.0" layoutY="190.0" rotate="180.0" text="5" textFill="WHITE">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="spinPink1Points" layoutX="313.0" layoutY="128.0" rotate="90.0" text="15" textFill="WHITE">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="spinPink2Points" layoutX="162.0" layoutY="128.0" rotate="270.0" text="20" textFill="WHITE">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Label>
+                        <Arc fx:id="spinPurple2" fill="#6f2424" layoutX="250.0" layoutY="150.0" length="90.0" radiusX="125.0" radiusY="125.0" startAngle="225.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fill="#06345f" layoutX="249.0" layoutY="50.0" length="90.0" radiusX="50.0" radiusY="50.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                      </children>
                   </Pane>
                </children>
@@ -77,6 +58,30 @@
     <bottom>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Brown =  5" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Pink    = 10" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Purple = 15" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Yellow = 20" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
                 <Region prefHeight="100.0" prefWidth="110.0" HBox.hgrow="ALWAYS" />
             <Button fx:id="spinButton1" mnemonicParsing="false" onAction="#spinButtonClicked" prefHeight="88.0" prefWidth="102.0" style="-fx-background-radius: 100;" text="Spin" textAlignment="CENTER">
                <font>
@@ -84,7 +89,7 @@
                </font>
             </Button>
             <Region prefHeight="100.0" prefWidth="65.0" />
-                <Button fx:id="goBack" mnemonicParsing="false" onAction="#goBackButtonPushed" prefHeight="90.0" prefWidth="90.0" style="-fx-background-radius: 100;" text="Go Back">
+                <Button fx:id="goBack" mnemonicParsing="false" onAction="#goBackButtonPushed" prefHeight="90.0" prefWidth="96.0" style="-fx-background-radius: 100;" text="Go Back">
                     <font>
                         <Font name="Baskerville Old Face" size="18.0" />
                     </font>
@@ -95,7 +100,4 @@
             </BorderPane.margin>
         </HBox>
     </bottom>
-    <top>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-    </top>
 </BorderPane>

@@ -44,60 +44,59 @@ public class Prizes {
     public void spinButtonClicked(ActionEvent event){
         // check if user can spin the spineWheel
 
+        if(!SelectPlayer.isLoggedIn()){
+            // Display a new dialog box and tell the user to Log-in
+            SelectPlayer.notLoggedInError();
+            return;
+        }
         // oldDateTime is the date and time for the last spin (stored as information of a user)
-        LocalDateTime oldDateTime = LocalDateTime.now();
-//        if(!SelectPlayer.isLoggedIn()){
-//            // Display a new dialog box and tell the user to Log-in
-//            SelectPlayer.notLoggedInError();
-//            return;
-//        }
-//        oldDateTime = SelectPlayer.currentUser.getLatestSpinWheelTime();
+        LocalDateTime oldDateTime = SelectPlayer.currentUser.getLatestSpinWheelTime();
 
-//        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
-//        if(currentDateTime.getYear() == oldDateTime.getYear()){
-//            if(currentDateTime.getMonthValue() == oldDateTime.getMonthValue()){
-//                if(currentDateTime.getDayOfMonth() == oldDateTime.getDayOfMonth()){
-//                    if(currentDateTime.getHour() - oldDateTime.getHour() < 6){
-//
-//                        // Display a new dialog box and tell the user to wait
-//                        Stage window = new Stage();
-//                        window.setHeight(450);
-//                        window.setWidth(300);
-//                        window.initModality(Modality.APPLICATION_MODAL);
-//                        window.setTitle("Unable to spin...");
-//
-//                        Button closeButton = new Button("Oh, I'll wait");
-//                        closeButton.setTranslateX(100);
-//                        closeButton.setTranslateY(300);
-//                        closeButton.setOnAction(new EventHandler<ActionEvent>() {
-//                            @Override
-//                            public void handle(ActionEvent event) {
-//                                window.close();
-//                            }
-//                        });
-//
-//                        Label messageLabel = new Label();
-//                        messageLabel.setFont(Font.font("Broadway"));
-//                        messageLabel.setAlignment(Pos.CENTER);
-//                        messageLabel.setText("Hold up! Our treasure hunters are out there finding the best thing for you! Return back in "+ (6 - currentDateTime.getHour()+oldDateTime.getHour())+" hours.");
-//                        messageLabel.setTranslateX(100);
-//                        messageLabel.setTranslateX(100);
-//
-//                        Group root = new Group();
-//                        root.getChildren().add(closeButton);
-//                        root.getChildren().add(messageLabel);
-//
-//                        Scene scene = new Scene(root,450,300, Color.GREY);
-//                        window.setScene(scene);
-//                        window.showAndWait();
-//                        return;
-//                    }
-//                }
-//            }
-//        }
+        if(currentDateTime.getYear() == oldDateTime.getYear()){
+            if(currentDateTime.getMonthValue() == oldDateTime.getMonthValue()){
+                if(currentDateTime.getDayOfMonth() == oldDateTime.getDayOfMonth()){
+                    if(currentDateTime.getHour() - oldDateTime.getHour() < 6){
+
+                        // Display a new dialog box and tell the user to wait
+                        Stage window = new Stage();
+                        window.setHeight(450);
+                        window.setWidth(300);
+                        window.initModality(Modality.APPLICATION_MODAL);
+                        window.setTitle("Unable to spin...");
+
+                        Button closeButton = new Button("Oh, I'll wait");
+                        closeButton.setTranslateX(100);
+                        closeButton.setTranslateY(300);
+                        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                window.close();
+                            }
+                        });
+
+                        Label messageLabel = new Label();
+                        messageLabel.setFont(Font.font("Broadway"));
+                        messageLabel.setAlignment(Pos.CENTER);
+                        messageLabel.setText("Hold up! Our treasure hunters are out there finding the best thing for you! Return back in "+ (6 - currentDateTime.getHour()+oldDateTime.getHour())+" hours.");
+                        messageLabel.setTranslateX(100);
+                        messageLabel.setTranslateX(100);
+
+                        Group root = new Group();
+                        root.getChildren().add(closeButton);
+                        root.getChildren().add(messageLabel);
+
+                        Scene scene = new Scene(root,450,300, Color.GREY);
+                        window.setScene(scene);
+                        window.showAndWait();
+                        return;
+                    }
+                }
+            }
+        }
         // set User's spin date and time to currentDateTime
-//        SelectPlayer.currentUser.setLatestSpinWheelTime(currentDateTime);
+        SelectPlayer.currentUser.setLatestSpinWheelTime(currentDateTime);
 
         // Get some random angle to spin the wheel
         Random random = new Random();
@@ -117,9 +116,22 @@ public class Prizes {
         float y = 62.5f;
 
         // SpinWheel rotates for longer time if 'angle' is large. On average it is 1000ms per 360 degrees.
-        int duration = (3000/360)*angle;
+        int duration = (1000/360)*angle;
         RotateTransition rt = new RotateTransition();
 
+        int tmpAngle = angle - 720;
+        if(tmpAngle > 45 && tmpAngle < 135){
+            SelectPlayer.currentUser.setStarsBalance(SelectPlayer.currentUser.getStarsBalance()+ 10);
+        }
+        else if(tmpAngle > 135 && tmpAngle < 225){
+            SelectPlayer.currentUser.setStarsBalance(SelectPlayer.currentUser.getStarsBalance()+ 5);
+        }
+        else if(tmpAngle > 225 && tmpAngle < 315){
+            SelectPlayer.currentUser.setStarsBalance(SelectPlayer.currentUser.getStarsBalance()+ 20);
+        }
+        else{
+            SelectPlayer.currentUser.setStarsBalance(SelectPlayer.currentUser.getStarsBalance()+ 15);
+        }
 
         spinPurple1.getTransforms().add(new Translate(-x,-y));
         spinPurple1.setTranslateX(x);
@@ -186,78 +198,6 @@ public class Prizes {
         rt.setCycleCount(1);
         rt.setByAngle(angle);
         rt.setAutoReverse(false);
-        par.getChildren().add(rt);
-
-        //spinPink1Points
-        x = -62.5f;
-        y = 0;
-        spinPink1Points.getTransforms().add(new Translate(-x,-y));
-        spinPink1Points.setTranslateX(x);
-        spinPink1Points.setTranslateY(y);
-
-        rt = new RotateTransition();
-
-        rt.setInterpolator(Interpolator.LINEAR);
-        rt.setDuration(Duration.millis(duration));
-        rt.setNode(spinPink1Points);
-        rt.setCycleCount(1);
-        rt.setByAngle(angle);
-//        rt.setAutoReverse(false);
-        //rt.play();
-        par.getChildren().add(rt);
-
-        // spinPink2Points
-        x = 62.5f;
-        y = 0f;
-        spinPink2Points.getTransforms().add(new Translate(-x,-y));
-        spinPink2Points.setTranslateX(x);
-        spinPink2Points.setTranslateY(y);
-
-        rt = new RotateTransition();
-
-        rt.setInterpolator(Interpolator.LINEAR);
-        rt.setDuration(Duration.millis(duration));
-        rt.setNode(spinPink2Points);
-        rt.setCycleCount(1);
-        rt.setByAngle(angle);
-//        rt.setAutoReverse(false);
-        //rt.play();
-        par.getChildren().add(rt);
-
-        // spinPurple1Points
-        x = 0f;
-        y = 62.5f;
-        spinPurple1Points.getTransforms().add(new Translate(-x,-y));
-        spinPurple1Points.setTranslateX(x);
-        spinPurple1Points.setTranslateY(y);
-
-        rt = new RotateTransition();
-
-        rt.setInterpolator(Interpolator.LINEAR);
-        rt.setDuration(Duration.millis(duration));
-        rt.setNode(spinPurple1Points);
-        rt.setCycleCount(1);
-        rt.setByAngle(angle);
-//        rt.setAutoReverse(false);
-        par.getChildren().add(rt);
-        //rt.play();
-
-        // spinPurple2Points
-        x = 0f;
-        y = -62.5f;
-        spinPurple2Points.getTransforms().add(new Translate(-x,-y));
-        spinPurple2Points.setTranslateX(x);
-        spinPurple2Points.setTranslateY(y);
-
-        rt = new RotateTransition();
-
-        //rt.setInterpolator(Interpolator.LINEAR);
-        rt.setDuration(Duration.millis(duration));
-        rt.setNode(spinPurple2Points);
-        rt.setCycleCount(1);
-        rt.setByAngle(angle);
-//        rt.setAutoReverse(false);
-        //rt.play();
         par.getChildren().add(rt);
 
         seq.getChildren().add(par);
