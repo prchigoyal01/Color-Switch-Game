@@ -47,6 +47,8 @@ public class SelectPlayer implements Initializable {
     public static ArrayList<Gameplay> gameplays;
     public static boolean pauseBoolean;
     public static boolean saveExitBoolean;
+    public static boolean firstTime = true;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -160,34 +162,43 @@ public class SelectPlayer implements Initializable {
     public Scene startGame(){
         //CREATE ROOT NODE
         Gameplay game = currentGameplay;
-        Group root = new Group();
+        Group root = game.getRoot();
         Ball ball = game.getBall();
+        Scene scene = game.getScene();
         pauseBoolean = false;
         saveExitBoolean = false;
 
         System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
         Button pauseButton = pauseButtonFunction();
-        Scene scene = new Scene(root, 500, 700, Color.GREY);
+        Label label = new Label();
+        label.setTranslateX(10);
+        label.setTranslateY(650);
+        label.setFont(new Font("Broadway",50));
+
         TranslateTransition moveUp = new TranslateTransition(Duration.millis(160));
         TranslateTransition moveDown = new TranslateTransition(Duration.millis(160));
 
-        root.getChildren().add(ball.getShape());
-        root.getChildren().add(pauseButton);
-        for(GameObject obj: game.getGameObjects()) {
-            if(obj instanceof ObstacleCombination) {
-                ObstacleCombination obstacle = (ObstacleCombination) obj;
-                root.getChildren().addAll(obstacle.components);
+        if(firstTime) {
+            root.getChildren().add(ball.getShape());
+            root.getChildren().add(pauseButton);
+            root.getChildren().add(label);
+            for (GameObject obj : game.getGameObjects()) {
+                if (obj instanceof ObstacleCombination) {
+                    ObstacleCombination obstacle = (ObstacleCombination) obj;
+                    root.getChildren().addAll(obstacle.components);
+                } else if (obj instanceof ColorSwitch) {
+                    ColorSwitch c = (ColorSwitch) obj;
+                    root.getChildren().addAll(c.components);
+                }
             }
-            else if(obj instanceof ColorSwitch) {
-                ColorSwitch c = (ColorSwitch) obj;
-                root.getChildren().addAll(c.components);
-            }
+            firstTime = false;
         }
 
         new AnimationTimer() {
             @Override
             public void handle(long l) {
+                label.setText("Score: " + ball.getScore());
                 ball.motion();
                 for (GameObject obj : game.getGameObjects()) {
                     if (obj instanceof ObstacleCombination) {
@@ -211,12 +222,12 @@ public class SelectPlayer implements Initializable {
                         }
                         else if(obj instanceof ColorSwitch) {
                             ColorSwitch c = (ColorSwitch) obj;
-//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
                             c.motion();
                         }
                     }
                 });
-                if(saveExitBoolean == true){
+
+                if(saveExitBoolean){
                     try{
                         Parent root = FXMLLoader.load(getClass().getResource("SelectPlayer.fxml" ));
                         Scene selectPlayerScene = new Scene(root);
@@ -345,7 +356,8 @@ public class SelectPlayer implements Initializable {
 
         System.out.println("BEFORE NEW GAME BUTTON PUSHED");
         System.out.println(numberToGamePlayMapping.toString());
-        Gameplay gameplay = new Gameplay(newUser, new Group());
+        Group root = new Group();
+        Gameplay gameplay = new Gameplay(newUser, root, new Scene(root, 500, 700, Color.GREY));
         // Register the new account to the database
         System.out.println("gameplays: "+gameplays);
         System.out.println("gameplays.size(): "+gameplays.size());

@@ -37,6 +37,8 @@ public final class Ball extends GameObject {
     protected transient TranslateTransition moveUp;
     private transient static Random rand = new Random();
     private transient Color[] colors;
+    private ArrayList<Bounds> scored;
+    private ArrayList<Bounds> obstructed;
 
     Ball(Group root) {
         this.X = 250;
@@ -46,16 +48,19 @@ public final class Ball extends GameObject {
         this.color = Color.CYAN;
         this.root = root;
         this.colors = new Color[]{Color.CYAN, Color.PURPLE, Color.DEEPPINK, Color.YELLOW};
+        this.scored = new ArrayList<>();
+        this.obstructed = new ArrayList<>();
 
         draw();
         moveDown = new TranslateTransition(Duration.millis(1600), this.shape);
         moveUp = new TranslateTransition(Duration.millis(160), this.shape);
-        motion();
     }
 
     public Shape getShape() { return shape; }
     public int getYMin() { return YMin; }
     public int getYBase() { return YBase; }
+    public int getScore() { return score; }
+
     @Override
     public void draw() {
         this.color = colors[rand.nextInt(4)];
@@ -76,23 +81,36 @@ public final class Ball extends GameObject {
     }
 
     public void mini_move_up() {
-        moveUp.setByY(-50);
+        moveUp.setByY(-25);
         moveUp.play();
     }
     public void collides(){
-        Iterator<Node> itr = this.root.getChildren().iterator();
+        Iterator itr = this.root.getChildren().iterator();
         boolean destroyBall = false;
         while(itr.hasNext()) {
-            Node x = itr.next();
+            Node x = (Node) itr.next();
             if(x instanceof Shape && !(x instanceof Circle) && x.getBoundsInParent().intersects(shape.getBoundsInParent())) {
                 if(intersectsObstacle((Shape) x)) {
-                    System.out.println("Collides with obstacle ->" + x.getBoundsInParent());
-                    destroyBall = true;
+                    boolean collided = false;
+                    for(Bounds b : obstructed) {
+                        collided = b.intersects(x.getBoundsInParent()) || collided;
+                    }
+                    if(!collided) {
+                        System.out.println("Collides with obstacle ->" + x.getBoundsInParent());
+                        destroyBall = true;
+                        obstructed.add(x.getBoundsInParent());
+                    }
                 }
                 if(intersectsStar((Shape) x)) {
-                    updateScore(x);
-                    System.out.println("Collides with star");
-                    System.out.println(score);
+                    boolean collided = false;
+                    for(Bounds b : scored) {
+                        collided = b.intersects(x.getBoundsInParent()) || collided;
+                    }
+                    if(!collided) {
+                        updateScore();
+                        System.out.println("Collides with star");
+                        scored.add(x.getBoundsInParent());
+                    }
                 }
                 if(intersectsColorSwitch((Shape) x)) {
                     System.out.println("Collides with color switch");
@@ -101,7 +119,7 @@ public final class Ball extends GameObject {
             }
         }
         if(destroyBall) {
-            destroy(shape);
+            destroy();
         }
     }
     private boolean intersectsObstacle(Shape x) {
@@ -137,11 +155,13 @@ public final class Ball extends GameObject {
         Paint c = x.getFill();
         return c == Color.BEIGE || c == Color.MAGENTA || c == Color.VIOLET || c == Color.BLUE;
     }
-    private void destroy(Shape x){
-        root.getChildren().remove(this.shape);
+    private void destroy(){
+        root.getChildren().remove(shape);
+        SelectPlayer.currentUser.setLevelsPlayed(SelectPlayer.currentUser.getLevelsPlayed() + 1);
     }
-    private void updateScore(Node x){
+    private void updateScore(){
         score++;
+        SelectPlayer.currentUser.setStarsBalance(SelectPlayer.currentUser.getStarsBalance()+ 1);
     }
     private void changeColor() {
         this.color = colors[rand.nextInt(4)];
