@@ -1,41 +1,41 @@
 package sample;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public final class Gameplay implements Serializable {
     private Ball ball;
-    private ArrayList<ObstacleCombination> allObstacleCombinations;
-    private ArrayList<ObstacleCombination> currentObstacleCombinations;
-    private ArrayList<ColorSwitch> currentColourSwitches;
+    private ArrayList<GameObject> gameObjects;
     private final static long SerialVersionUID = 42L;
     public UserProfile user;
     private Group root;
-    private Scene scene;
+    private static Random rand = new Random();
 
-    Gameplay(UserProfile user, Group root, Scene scene){
+    Gameplay(UserProfile user, Group root){
         this.user = user;
-        this.ball = new Ball(root, scene);
-        this.allObstacleCombinations = new ArrayList<>();
-        this.currentObstacleCombinations = new ArrayList<>();
-        this.currentColourSwitches = new ArrayList<>();
+        this.ball = new Ball(root);
+        this.gameObjects = new ArrayList<>();
         this.root = root;
-        this.scene = scene;
         createGame();
     }
 
     public Ball getBall() { return ball; }
-    public ArrayList<ObstacleCombination> getAllObstacleCombinations() { return allObstacleCombinations; }
-    public ArrayList<ObstacleCombination> getCurrentObstacleCombinations() { return currentObstacleCombinations; }
-    public ArrayList<ColorSwitch> getCurrentColourSwitches() { return currentColourSwitches; }
+    public ArrayList<GameObject> getGameObjects() { return gameObjects; }
     public Group getRoot() { return root; }
-    public Scene getScene() { return scene; }
 
     public void createGame() {
-        allObstacleCombinations.add(new ringSmallStar());
+        gameObjects.add(new RightCrossStar(root));
+        gameObjects.add(new LeftCrossStar(root));
+        gameObjects.add(new DiamondLineStar(root));
+        gameObjects.add(new SquareLineStar(root));
+        gameObjects.add(new ColorSwitch(root));
     }
     public static void saveGame() {}
     public static void loadGame() {}

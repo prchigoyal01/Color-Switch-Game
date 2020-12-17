@@ -1,21 +1,33 @@
 package sample;
 
+import javafx.animation.TranslateTransition;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public final class ColorSwitch extends GameObject{
     ArrayList<Shape> components;
+    private int YMove;
+    private Group root;
+    protected static TranslateTransition move = new TranslateTransition(Duration.millis(160));
 
-    ColorSwitch(int X, int Y) {
+    ColorSwitch(Group root) {
         components = new ArrayList<Shape>();
-        this.X = X;
-        this.Y = Y;
+        this.X = 250;
+        this.Y = -980;
+        this.YMove = 0;
+        this.root = root;
         draw();
     }
+
+    public int getYMove() { return YMove; }
+    public void setYMove(int YMove) { this.YMove = YMove; }
+
     @Override
     public void draw(){
         Arc UL = new Arc();
@@ -35,7 +47,7 @@ public final class ColorSwitch extends GameObject{
         BL.setRadiusY(20);
         BL.setLength(90);
         BL.setStartAngle(180);
-        BL.setFill(Color.GOLD);
+        BL.setFill(Color.BEIGE);
         BL.setType(ArcType.ROUND);
 
         Arc UR = new Arc();
@@ -65,5 +77,21 @@ public final class ColorSwitch extends GameObject{
     }
 
     @Override
-    public void motion(){}
+    public void motion(){
+        for(Shape x : components) {
+            TranslateTransition tt = new TranslateTransition();
+            tt.setDuration(Duration.millis(160));
+            tt.setNode(x);
+            tt.setByY(50);
+            tt.play();
+            if(x.getTranslateY() > 600) {
+                x.setTranslateY(-980);
+            }
+        }
+    }
+    protected void destroy() {
+        for(Shape x: components) {
+            x.setTranslateY(Y - 200);
+        }
+    }
 }

@@ -1,10 +1,13 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -17,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -85,37 +89,48 @@ public class SelectPlayer implements Initializable {
     public Scene startGame(){
         //CREATE ROOT NODE
         Group root = new Group();
-        UserProfile player = new UserProfile("player", "player", "player");
-        Gameplay game = new Gameplay(player, root,null);
-
+        UserProfile user = new UserProfile("p", "p", "p");
+        Gameplay game = new Gameplay(user, root);
+        Ball ball = game.getBall();
         System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
-        //CREATE OBJECT
-        ringSmall s = new ringSmall();
-        ringMedium m = new ringMedium();
-        ringLarge l = new ringLarge();
-        SquareLine sql = new SquareLine();
-        DiamondLine dl = new DiamondLine();
-        LeftCross lc = new LeftCross();
-        RightCross rc = new RightCross();
-        ColorSwitch c = new ColorSwitch(250, 250);
-        Star star = new Star(250, 150);
-        Ball b = new Ball(root,null);
-
-        //Add all Elements to root node
-        root.getChildren().add(game.getBall().getShape());
         Scene scene = new Scene(root, 500, 700, Color.GREY);
+        TranslateTransition moveUp = new TranslateTransition(Duration.millis(160));
+        TranslateTransition moveDown = new TranslateTransition(Duration.millis(160));
 
-        for(Shape x : c.components) {
-            root.getChildren().add(x);
+        root.getChildren().add(ball.getShape());
+        for(GameObject obj: game.getGameObjects()) {
+            if(obj instanceof ObstacleCombination) {
+                ObstacleCombination obstacle = (ObstacleCombination) obj;
+                root.getChildren().addAll(obstacle.components);
+            }
+            else if(obj instanceof ColorSwitch) {
+                ColorSwitch c = (ColorSwitch) obj;
+                root.getChildren().addAll(c.components);
+            }
         }
+
+        new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                ball.motion();
+            }
+        }.start();
 
         //MouseEvent
         scene.setOnMouseClicked(e -> {
-            System.out.println("clicked");
-            game.getBall().moveUp.setByY(-100);
-            game.getBall().moveUp.play();
-            System.out.println(b.getShape().getTranslateY());
+            ball.mini_move_up();
+            for(GameObject obj : game.getGameObjects()) {
+                if(obj instanceof ObstacleCombination) {
+                    ObstacleCombination obstacle = (ObstacleCombination) obj;
+                    obstacle.motion();
+                }
+                else if(obj instanceof ColorSwitch) {
+                    ColorSwitch c = (ColorSwitch) obj;
+//                        c.setYMove(-1 * (int)ball.getShape().getTranslateY());
+                    c.motion();
+                }
+            }
         });
 
         return scene;
@@ -228,7 +243,7 @@ public class SelectPlayer implements Initializable {
 
         System.out.println("BEFORE NEW GAME BUTTON PUSHED");
         System.out.println(numberToGamePlayMapping.toString());
-        Gameplay gameplay = new Gameplay(newUser, new Group(),null);
+        Gameplay gameplay = new Gameplay(newUser, new Group());
         // Register the new account to the database
         System.out.println("gameplays: "+gameplays);
         System.out.println("gameplays.size(): "+gameplays.size());

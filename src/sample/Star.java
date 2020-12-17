@@ -3,11 +3,10 @@ package sample;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import java.io.Serializable;
-
-public final class Star extends GameObject {
+public final class Star extends GameObject{
     private Shape shape;
 
     Star(int X, int Y) {
@@ -22,8 +21,11 @@ public final class Star extends GameObject {
 
         Double x = (double) this.X;
         Double y = (double) this.Y;
-        Circle p = new Circle(this.X, this.Y, 10, Color.GOLD);
-        this.shape = p;
+
+        Rectangle r = new Rectangle(10, 10, Color.GOLD);
+        r.setX(this.X);
+        r.setY(this.Y);
+        this.shape = r;
     }
 
     @Override
