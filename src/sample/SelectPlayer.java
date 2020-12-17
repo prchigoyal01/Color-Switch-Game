@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -43,6 +44,7 @@ public class SelectPlayer implements Initializable {
     public static UserProfile currentUser;
     public static Gameplay currentGameplay;
     public static ArrayList<Gameplay> gameplays;
+    public static boolean pauseBoolean;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -84,22 +86,74 @@ public class SelectPlayer implements Initializable {
         }
     }
 
+    Button pauseButtonFunction(){
+        Button button = new Button("||");
+        button.setTranslateX(10);
+        button.setTranslateY(10);
+        button.setFont(new Font("Broadway",10));
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                {
+                    pauseBoolean = true;
+                    Stage window = new Stage();
+                    window.setWidth(400);
+                    window.setHeight(350);
+                    window.initModality(Modality.APPLICATION_MODAL);
+                    window.setTitle("Pause game");
+
+                    Label welcomeText = new Label();
+                    welcomeText.setFont(new Font("Broadway", 30));
+                    welcomeText.setAlignment(Pos.CENTER);
+                    welcomeText.setText("Pause Menu");
+                    welcomeText.setTranslateX(110);
+                    welcomeText.setTranslateY(10);
+
+                    Button closeButton = new Button("Close Menu");
+                    closeButton.setTranslateX(145);
+                    closeButton.setTranslateY(300);
+                    closeButton.setFont(new Font("Broadway", 10));
+                    closeButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            pauseBoolean = false;
+                            window.close();
+                        }
+                    });
+
+                    Group root = new Group();
+                    root.getChildren().add(welcomeText);
+                    root.getChildren().add(closeButton);
+
+                    Scene scene = new Scene(root, 300, 300, Color.DARKGRAY);
+                    window.initStyle(StageStyle.UNDECORATED);
+                    window.setScene(scene);
+                    window.showAndWait();
+                    // after exiting the new Stage
+                }
+            }
+        });
+
+        return button;
+    }
+
     // Start playing game from here, will be called after loading the game and setting the
     // required attributes (like objects,stars, position of ball, angle of rotation of obstacles already present).
     public Scene startGame(){
         //CREATE ROOT NODE
-        Group root = new Group();
-        UserProfile user = new UserProfile("p", "p", "p");
-        Gameplay game = new Gameplay(user, root);
-        currentGameplay = game;
+        Gameplay game = currentGameplay;
+        Group root = game.getRoot();
         Ball ball = game.getBall();
+        pauseBoolean = false;
         System.out.println("CURRENT GAMEPLAY: " + currentGameplay);
 
+        Button pauseButton = pauseButtonFunction();
         Scene scene = new Scene(root, 500, 700, Color.GREY);
         TranslateTransition moveUp = new TranslateTransition(Duration.millis(160));
         TranslateTransition moveDown = new TranslateTransition(Duration.millis(160));
 
         root.getChildren().add(ball.getShape());
+        root.getChildren().add(pauseButton);
         for(GameObject obj: game.getGameObjects()) {
             if(obj instanceof ObstacleCombination) {
                 ObstacleCombination obstacle = (ObstacleCombination) obj;
@@ -168,6 +222,10 @@ public class SelectPlayer implements Initializable {
     }
 
     public void startGamePlayButtonPushed(ActionEvent event) throws IOException {
+        if(!isLoggedIn()){
+            notLoggedInError();
+            return;
+        }
         Scene gameplayScene = startGame();
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(gameplayScene);
@@ -320,15 +378,23 @@ public class SelectPlayer implements Initializable {
         });
 
         Label messageLabel = new Label();
-        messageLabel.setFont(Font.font("Broadway"));
+        messageLabel.setFont(Font.font("Broadway",13));
         messageLabel.setAlignment(Pos.CENTER);
-        messageLabel.setText("Ours spies detected you are not logged in. How do we know you can be trusted...");
-        messageLabel.setTranslateX(100);
+        messageLabel.setText("Ours spies detected you are not logged in.");
+        messageLabel.setTranslateX(10);
         messageLabel.setTranslateY(100);
+
+        Label messageLabel2 = new Label();
+        messageLabel2.setFont(Font.font("Broadway",14));
+        messageLabel2.setAlignment(Pos.CENTER);
+        messageLabel2.setText("How do we know you can be trusted...");
+        messageLabel2.setTranslateX(10);
+        messageLabel2.setTranslateY(150);
 
         Group root = new Group();
         root.getChildren().add(closeButton);
         root.getChildren().add(messageLabel);
+        root.getChildren().add(messageLabel2);
 
         Scene scene = new Scene(root,300,300, Color.GREY);
         window.setScene(scene);
